@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-
+ 
 use App\customer;
 use App\userMe;
 use App\userstatus;

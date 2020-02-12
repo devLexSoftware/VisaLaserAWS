@@ -7,7 +7,7 @@
         <div id="wrapper">            
             @include('includes.headerDash')            
 
-            
+             
             @yield('content')    
             
 

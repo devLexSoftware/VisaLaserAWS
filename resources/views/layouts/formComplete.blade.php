@@ -7,7 +7,7 @@
     @if(\Session::has('message'))
 		@include('includes.statuspay')
 	@endif
-	
+	 
 	
     <header class="row">
         @include('includes.header')

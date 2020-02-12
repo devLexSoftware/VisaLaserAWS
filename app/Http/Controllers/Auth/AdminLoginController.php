@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
-{
+{ 
     //
     public function __construct(){
         $this->middleware('guest:admin');

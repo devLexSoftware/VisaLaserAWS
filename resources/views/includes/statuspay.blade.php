@@ -3,4 +3,4 @@
 		<span aria-hidden="true">&times;</span>
 	</button>
 	<h2><strong><i class="fa fa-info-circle"></i></strong> {{ \Session::get('message') }}</h2>
-</div>
+</div> 

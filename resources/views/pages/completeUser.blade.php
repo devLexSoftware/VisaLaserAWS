@@ -6,13 +6,13 @@
 @endif
 
 <div id="exTab2" class="container">	
-<h4>Estatus de solicitud: {{$customer[0]->trStatus}}</h4>
+<h4 style="text-align: center; font-size:30px;">Estatus de solicitud: {{$customer[0]->trStatus}}</h4>
 <hr>
-@if($customer[0]->trStatus == "Proceso")
+@if($customer[0]->trStatus == "Pago Pendiente")
 <a href="{{ route('payment') }}" class="btn btn-md btn-info pull-right">Pagar</a>
 @endif
 
-<br>
+<br> 
 
     <ul class="nav nav-tabs">
         <li class="active"><a  href="#1" data-toggle="tab">Información básica</a></li>

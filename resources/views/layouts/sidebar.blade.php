@@ -9,7 +9,7 @@
     <header class="row">
         @include('includes.header')
     </header>
-
+ 
     <div id="main" class="row">
 
         <!-- sidebar content -->

@@ -16,7 +16,7 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
-
+ 
  
 use App\Order;
 use App\OrderItem;
@@ -182,26 +182,19 @@ class PaypalController extends Controller
 
 //----Validar pago
 
-		if ($result->getState() == 'approved') {
- 
+		if ($result->getState() == 'approved') { 
 			$idTransaction = $this->saveOrder("Exito");
 
-			$idTransactionDetail = $this->saveOrderDetail($idTransaction);
-			 
-
-			
-			$info = session('info');
-			
+			$idTransactionDetail = $this->saveOrderDetail($idTransaction);			 
+			$info = session('info');			
 			$user = array(
 				"idUser" => $info["user"],
 				"message" => "Exito"				
 			);
-
 			\Session::forget('info');
 			\Session::forget('cart');
 			session()->put('user', $user);
 			
- 
 			// return Redirect::route('registerComplete')
 			// 	 ->with('message', 'Compra realizada de forma correcta');
 
@@ -210,6 +203,9 @@ class PaypalController extends Controller
 
 
 		}
+		
+		
+		$idTransaction = $this->saveOrder("Pago Pendiente");
 		return \Redirect::route('registerComplete')
 			->with('message', 'La compra fue cancelada');
 	}

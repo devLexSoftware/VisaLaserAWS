@@ -1,27 +1,27 @@
 @extends('layouts.form')
 @section('content1')
-<p class="form-info-title">
+<p class="form-info-title" style="text-align: center; font-size:30px;">
     Felicidades!!!
 </p>
-<h3>
+<h3 style="text-align: center;">
 En base a sus respuestas proporcionadas usted SI califica para aplicar para una Visa
 de turista categoría B1/B2 para los Estados Unidos.
 </h3>
 @stop
-
+ 
 @section('content2')
 <br>
 <hr>
-<h4>
+<h4 style="text-align: justify;">
 A continuación usted podrá obtener una guía completa en Español para
 continuar con el trámite de su Visa
 </h4>
 
-<h4>
+<h4 style="text-align: justify;">
 Con esta guía usted podrá tramitar por primera vez o renovar su Visa Americana de Turista
 categoría B1/B2 sin ningún contratiempo. 
 </h4>
-<h4>
+<h4 style="text-align: justify;">
 El costo es de $55 USD por solicitante para personas
 mayores de 21 años de edad y de $ 35 USD para solicitantes menores de 21 años de edad e
 incluye lo siguiente:
@@ -49,30 +49,29 @@ incluye lo siguiente:
 <div>
     <div class="row">
         <div class="col-md-6">
-            <label for="">
+            <p for="" style="text-align: center; font-size:18px; font-weight: bold;">
             Pago mayores de 21 años $ 55 USD
-            </label>
+            </p>
         </div>
         <div class="col-md-6">
-            <label for="">
+            <p for="" style="text-align: center; font-size:18px; font-weight: bold;">
             Pago menores de 21 años $ 35 USD
-            </label>
+            </p>
         </div>
     </div>
 </div>
 
-<h4>Este pago no es reembolsable y no incluye los pagos Consulares. 
+<h4  style="text-align: center;" class="form-info-title">Este pago no es reembolsable y no incluye los pagos Consulares. 
 </h4>
-
+<hr>
 
 @stop
 @section('content3')
-<h4>El precio de esta guía está reflejado en dólares Americanos, sin embargo el cargo a su tarjeta
+<h4 style="text-align: justify;">El precio de esta guía está reflejado en dólares Americanos, sin embargo el cargo a su tarjeta
 de crédito o débito se verá reflejado en su moneda local al tipo de cambio del día.
 No es necesario que usted tenga una cuenta en dólares para realizar el pago</h4>
 
-<br>
 <hr>
-
-<a href="registerUser">Registar y pagar</a>
+<br>
+<a href="registerUser"  class="btn btn-success" style="font-size:18px; font-weight: bold;">Registar y pagar</a>
 @stop

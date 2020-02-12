@@ -12,7 +12,7 @@
     <header class="row">
         @include('includes.header')
     </header>
-
+ 
     <div id="main">
         <div class="container">
         

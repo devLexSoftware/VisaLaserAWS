@@ -2,37 +2,57 @@
 
 @section('content')
 
-
+ 
 <div id="content-wrapper" class="d-flex flex-column">
 
 <!-- Main Content -->
 <div id="content">
-
-  <!-- Topbar -->
-  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-      <i class="fa fa-bars"></i>
-    </button>
-
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <div class="row">
+      <div class="col-md-12">
+      <h3>Edicion en cliente</h3>
+      </div>      
+    </div>  
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+      <div class="topbar-divider d-none d-sm-block"></div>
+      <!-- Nav Item - User Information -->
+      <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="font-size:20px;">Opción</span>          
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">                    
+          <a class="dropdown-item" href="logout">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+          </a>
+        </div>
+      </li>
+    </ul>
   </nav>
+  <!-- Topbar -->
+  
 
   
-			@if(Session::has('success'))
-			<div class="alert alert-info">
-				{{Session::get('success')}}
-			</div>
-			@endif
+    @if(Session::has('success'))
+    <div class="alert alert-info">
+        {{Session::get('success')}}
+    </div>
+    @endif
+
+
+
 
 <div class="container-fluid">
-<form action="/clientesEdicion/{{$customer[0]->usId}}" method="POST" >
-  {{ csrf_field() }}
+
 
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Cliente</h1>
     <p class="mb-4"> Edición cliente</a></p>
     
+    <form action="/clientesEdicion/1" method="POST" >
+    {{ csrf_field() }}
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Información de pago</h6>
@@ -43,28 +63,46 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="sel1">Total $$<span class="star"> *</span></label>
-                        <input value="{{$customer[0]->trCurrency}}"  type="text" class="form-control" id="basic_nombre" name="basic_nombre" aria-describedby="" placeholder="Nombre(s)">
+                        <input value="{{$customer[0]->trCurrency}}"  type="text" class="form-control" id="basic_total" name="basic_total" aria-describedby="" placeholder="Nombre(s)">
                         
                     </div>
                 </div>                                  
                 <div class="col-md-3">
                     <div class="form-group">
                     <label for="sel1">Fecha registro<span class="star"> *</span></label>
-                        <input value="{{$customer[0]->trdate}}" type="text" class="form-control" id="basic_apellidos" name="basic_apellidos" aria-describedby="" placeholder="Apellidos(s)">
+                        <input value="{{$customer[0]->trdate}}" type="text" class="form-control" id="basic_date2" name="basic_date2" aria-describedby="" placeholder="Apellidos(s)">
                     </div>                
                 </div>                                  
                 <div class="col-md-3">
                     <div class="form-group">
                     <label for="sel1">Status<span class="star"> *</span></label>
-                        <input value="{{$customer[0]->trStatus}}" type="text" class="form-control" id="basic_apellidos" name="basic_apellidos" aria-describedby="" placeholder="Apellidos(s)">
+                        <input value="{{$customer[0]->trStatus}}" type="text" class="form-control" id="basic_status2" name="basic_status2" aria-describedby="" placeholder="Apellidos(s)">
                     </div>                
-                </div>                                  
+                </div>  
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                    @if($customer[0]->trStatus == "Sin Revisar")
+                        <label for="sel1">Cambiar estado a Revisado</label>
+                        <br>
+                        <input value="{{$customer[0]->trId}}" type="hidden" id="transaction_Id" name="transaction_Id">
+                        <input value="{{$customer[0]->usId}}" type="hidden" class="form-control" id="basic_usId2" name="basic_usId2" >
+                        <button id="inputSubmit" type="submit" class="btn btn-success">Cambiar</button>
+                        @endif
+                    </div>                
+                </div>  
+
+                
+
             </div>
         </div>
       </div>    
     </div>
 
+    </form>
 
+    <form action="/clientesEdicion/2" method="POST" >
+  {{ csrf_field() }}
     <div class="card shadow mb-4">
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Datos generales</h6>
@@ -79,7 +117,7 @@
                         <label for="sel1">Nombre(s)<span class="star"> *</span></label>
                         <input value="{{$customer[0]->cuFirst}}" required  type="text" class="form-control" id="basic_nombre" name="basic_nombre" aria-describedby="" placeholder="Nombre(s)">
                         <input value="{{$customer[0]->curId}}" required type="hidden" class="form-control" id="basic_cuId" name="basic_cuId" aria-describedby="" placeholder="Nombre(s)">                                    
-                        <input value="{{$customer[0]->usId}}" required type="hidden" class="form-control" id="basic_usId" name="basic_usId" aria-describedby="" placeholder="Nombre(s)">
+                        <input value="{{$customer[0]->usId}}" required type="hidden" class="form-control" id="basic_usId1" name="basic_usId" aria-describedby="" placeholder="Nombre(s)">
                     </div>
                 </div>                                  
                 <div class="col-md-6">

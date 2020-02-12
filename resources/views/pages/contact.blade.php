@@ -9,7 +9,7 @@
                      <p>Por favor, siéntase libre de contactarnos, nuestro centro de servicio al cliente está trabajando para usted 24/7.</p>
 <hr>
                      <h3 class="help"><i class="fa fa-cogs"></i> Soporte Electrónico</h3>
-
+ 
                      <p class="lead">Si su visa fue aprobada, ya pasaron 3 o 4 semanas de su entrevista  y necesita conocer el número de rastreo de su Visa, envíenos un correo a:</p>
                      <a href="mailto:" style="color: #1c58c2;"><i class="fa fa-envelope" style="font-size:14px"></i> rastreo@csc-americanvisa-mexico.com</a>
                       <p class="lead">Si tiene problemas con su pago envíenos un correo a:</p>

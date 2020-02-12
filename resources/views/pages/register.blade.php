@@ -4,7 +4,7 @@
 <p class="form-info-title" style="text-align: center; font-size:30px;">
     Importante
 </p>
-<p class="form-info">
+<p class="form-info" style="text-align:justify">
 Visa Laser Mexico, no proporcionará información telefónica a solicitantes
 que no cuenten con un registro en nuestra página. Una vez que usted se haya registrado y
 haya realizado el pago, nuestro personal se pondrá en contacto con usted para continuar
@@ -12,11 +12,11 @@ con el trámite de su VISA, y de esta manera resolver todas sus dudas.
 Problemas con su pago envíe un correo a: pagos@visalaser.com.mx
 </p>
 @stop
-
+ 
 @section('content2')
 <div class="col-md-12 order-md-12">
     <h2 class="mb-3"> Registro</h2>
-    <h4 class="mb-3">Por medio del siguiente cuestionario, usted podrá saber si cumple con las condiciones para aplicar
+    <h4 class="mb-3" style="text-align:justify">Por medio del siguiente cuestionario, usted podrá saber si cumple con las condiciones para aplicar
 para este tipo de Visa de turista categoría B1/B2 en los Consulados o Embajada de Los Estados
 Unidos en México.</h4>
     <br>

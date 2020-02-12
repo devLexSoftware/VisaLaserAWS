@@ -1,5 +1,5 @@
 <footer class="footer1">
-  <div class="container">
+  <div class="container"> 
     <div class="row"><!-- row -->
       <div class="col-lg-4 col-md-4"><!-- widgets column left -->
         <ul class="list-unstyled clear-margins"><!-- widgets -->
@@ -8,7 +8,7 @@
             <ul>
               <li><a  href="http://localhost:8080/csc/"><i class="fa fa-angle-double-right"></i> Inicio</a></li>
               <li><a  href="tramite"><i class="fa fa-angle-double-right"></i>  Trámites de visa B1/B2</a></li>
-              <li><a  href="register"><i class="fa fa-angle-double-right"></i>  Renovación de visa B1/B2</a></li>
+              <li><a  href="registerUser"><i class="fa fa-angle-double-right"></i>  Renovación de visa B1/B2</a></li>
               <li><a  href="contact"><i class="fa fa-angle-double-right"></i>  Contacto</a></li>              
             </ul>
           </li>
@@ -80,6 +80,7 @@
         case 'pregunta_1':
           if(value === "Si"){
             document.getElementById("error_1").style.visibility = "hidden";            
+            document.getElementById("error_1").innerHTML = "";
             // formTrue = formTrue - 1;
           }
           else if(value === "No"){        
@@ -102,6 +103,7 @@
         }
         else{          
           document.getElementById("error_2").style.visibility = "hidden";
+          document.getElementById("error_2").innerHTML = "";
           // formTrue = true;
         }
         break;
@@ -114,6 +116,7 @@
         }        
         else{          
           document.getElementById("error_3").style.visibility = "hidden";
+          document.getElementById("error_3").innerHTML = "";
           // formTrue = true;
         }
         break;
@@ -126,6 +129,7 @@
         }        
         else{          
           document.getElementById("error_4").style.visibility = "hidden";
+          document.getElementById("error_4").innerHTML = "";
           // formTrue = true;
         }
         break;
@@ -138,6 +142,7 @@
         }        
         else{          
           document.getElementById("error_5").style.visibility = "hidden";
+          document.getElementById("error_5").innerHTML = "";
           // formTrue = true;
         }
         break;
@@ -150,6 +155,7 @@
         }        
         else{          
           document.getElementById("error_6").style.visibility = "hidden";
+          document.getElementById("error_6").innerHTML = "";
           // formTrue = true;
         }
         break;

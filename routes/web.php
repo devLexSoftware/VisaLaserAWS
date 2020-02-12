@@ -1,5 +1,5 @@
 <?php
-
+ 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +26,8 @@
 Route::prefix('admin')->group(function(){
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-    Route::get('/', 'clientsController@clientesPendientes')->name('admin.dashboard');
+    Route::get('/', 'clientsController@dashboard')->name('admin.dashboard');
     // Route::get('/', 'AdminController@index')->name('admin.dashboard');
-
 });
 
 
@@ -36,7 +35,8 @@ Route::prefix('admin')->group(function(){
 Route::get('dashboard', function()
 {
     if(Auth::guard('admin')->check()){
-        return View::make('pages.pageDash');
+        // return View::make('pages.pageDash');
+        Route::get('clientes', 'clientsController@clientesPendientesInicial');
     }
     else{
         return View::make('pages.home');
@@ -47,17 +47,19 @@ Route::get('dashboard', function()
 Route::get('clientesEdicion/{id}', ['as' => 'clientesEdicion', 'uses' => 'clientsController@clienteEdicion']);
 
 
+
 // Route::get('clientesEdicion', 'clientsController@clienteEdicion');
 
 
 Route::get('clientesPendientes', 'clientsController@clientesPendientes');
-Route::get('clientesReservar', 'clientsController@clientesReservar');
+Route::get('clientesNoRevisados', 'clientsController@clientesSinRevisar');
 Route::get('clientesRevisadas', 'clientsController@clientesRevisadas');
 Route::get('clientes', 'clientsController@clientesTodos');
 
 
 
 Route::post('/clientesEdicion/{id}', 'clientsController@saveClientInformation');
+
 
 
 

@@ -5,7 +5,7 @@
     renovar su Visa para los siguientes países: <b>Estados Unidos, Australia, China, Egipto, India,
     Tailandia  y eTA Canadá.</b> 
 </p>
-
+ 
 <p class="information-index" style="text-align:justify">
     Durante todo el proceso recibirá asistencia personalizada en Español,
     para poder llevar a cabo correctamente su trámite.

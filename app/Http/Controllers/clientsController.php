@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\customer;
 use App\userMe;
 use App\userstatus;
-use App\transaction;
+use App\transactionTable;
 use App\procedure;
 use App\education;
 use App\job;
@@ -23,6 +23,22 @@ class clientsController extends Controller
 {
     //
 
+
+   
+
+    public function dashboard(){
+        if(Auth::guard('admin')->check()){
+            $data = DB::table('transaction')
+            ->select('transaction.currency as trCurrency', 'transaction.id as trId', 'transaction.status as trStatus' )           
+           ->get();
+           
+           return view('pages.pageDash', ['customer' => $data]);  
+         }
+         else{
+            return Redirect::to('/');                
+         }
+    }
+
     public function clientesPendientes(){        
 
          if(Auth::guard('admin')->check()){
@@ -32,7 +48,7 @@ class clientsController extends Controller
             'transaction.id as trId', 'transaction.currency as trCurrency', 'transaction.dateTime as trDateTime', 'transaction.status as trStatus')
            ->join('user', 'user.id_customer', '=', 'customer.id')  
            ->join('transaction', 'transaction.id_customer', '=', 'customer.id')        
-        ->get();       
+           ->where('transaction.status', '=', 'Pago Pendiente')->get();
            return view('pages.dashClientesPendientes', ['customer' => $data]);  
          }
          else{
@@ -42,7 +58,7 @@ class clientsController extends Controller
         
     }
 
-    public function clientesReservar(){        
+    public function clientesSinRevisar(){        
 
       if(Auth::guard('admin')->check()){
          
@@ -52,7 +68,7 @@ class clientsController extends Controller
         'transaction.id as trId', 'transaction.currency as trCurrency', 'transaction.dateTime as trDateTime', 'transaction.status as trStatus')
        ->join('user', 'user.id_customer', '=', 'customer.id')  
        ->join('transaction', 'transaction.id_customer', '=', 'customer.id')    
-      ->get();       
+       ->where('transaction.status', '=', 'Sin Revisar')->get();
        return view('pages.dashClientesReservar', ['customer' => $data]);
       }
       else{
@@ -70,7 +86,7 @@ class clientsController extends Controller
         'transaction.id as trId', 'transaction.currency as trCurrency', 'transaction.dateTime as trDateTime', 'transaction.status as trStatus')
        ->join('user', 'user.id_customer', '=', 'customer.id')  
        ->join('transaction', 'transaction.id_customer', '=', 'customer.id')    
-         ->get();       
+       ->where('transaction.status', '=', 'Revisado')->get();
             return view('pages.dashClientesRevisadas', ['customer' => $data]);
       }
       else{
@@ -127,17 +143,46 @@ class clientsController extends Controller
     }   
 
 
-    public function saveClientInformation($id)
+    public function saveClientInformation($opcion)
     {
-        $idCustomer = $this->saveCustomer();
-        $idUser = $this->saveUser();        
-        $idSpouse = $this->saveSpouse();
-        $idParent = $this->saveParent();
-        $idContact = $this->saveContact();
-        $idEducation = $this->saveEducation();
-        $idJob = $this->saveJob();
+ 
+        if($opcion == 1){
+            $this->saveClientStatus();
+            $idUser = request("basic_usId2");
+        }
+        else{
+            $idCustomer = $this->saveCustomer();
+            $idUser = $this->saveUser();        
+            $idSpouse = $this->saveSpouse();
+            $idParent = $this->saveParent();
+            $idContact = $this->saveContact();
+            $idEducation = $this->saveEducation();
+            $idJob = $this->saveJob();
+
+            $idUser = request("basic_usId1");
+        }
+        
       
-        return redirect()->route('clientesEdicion', request("basic_usId"))->with('success','Registro actualizado satisfactoriamente');
+        return redirect()->route('clientesEdicion', $idUser)->with('success','Registro actualizado satisfactoriamente');
+    }
+
+    public function saveClientStatus(){
+        
+        //  try{            
+            $transaction = transactionTable::find(request("transaction_Id"));
+
+            $transaction->status = "Revisado";
+            
+            $transaction->save();                    
+            $idTransaction = $transaction->id;
+            return $idTransaction;
+                        
+        // }
+        // catch(\Exception $e){
+        //    return "";
+
+        //     //  return Redirect::back();
+        // }
     }
 
     protected function saveCustomer(){

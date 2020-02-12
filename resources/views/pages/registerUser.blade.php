@@ -1,13 +1,9 @@
 @extends('layouts.form')
 @section('content1')
-<p class="form-info-title">
-    Felicidades!!!
-</p>
-
 @if($errors->any())
 <h4>{{$errors->first()}}</h4>
 @endif
-
+ 
 <form id="firtsRegister" action="registerPaymethod" method="post" enctype="multipart/form-data">
 {{ csrf_field() }}
 <div class="panel panel-primary"> 
