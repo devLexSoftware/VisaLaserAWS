@@ -11,18 +11,6 @@
 |
 */
 
-//www.miPagina.com
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// //www.miPagina.com/pagina1
-// Route::get('pagina1', function () {
-//     return view('pagina1');
-// });
-
-
-
 Route::prefix('admin')->group(function(){
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
@@ -46,19 +34,14 @@ Route::get('dashboard', function()
 
 Route::get('clientesEdicion/{id}', ['as' => 'clientesEdicion', 'uses' => 'clientsController@clienteEdicion']);
 
-
-
-// Route::get('clientesEdicion', 'clientsController@clienteEdicion');
-
-
 Route::get('clientesPendientes', 'clientsController@clientesPendientes');
 Route::get('clientesNoRevisados', 'clientsController@clientesSinRevisar');
 Route::get('clientesRevisadas', 'clientsController@clientesRevisadas');
 Route::get('clientes', 'clientsController@clientesTodos');
-
-
-
 Route::post('/clientesEdicion/{id}', 'clientsController@saveClientInformation');
+
+
+Route::get('dashboardPago', 'clientsController@dashboardPago');
 
 
 

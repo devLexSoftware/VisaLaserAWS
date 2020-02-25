@@ -183,7 +183,7 @@ class PaypalController extends Controller
 //----Validar pago
 
 		if ($result->getState() == 'approved') { 
-			$idTransaction = $this->saveOrder("Exito");
+			$idTransaction = $this->saveOrder("Sin Revisar");
 
 			$idTransactionDetail = $this->saveOrderDetail($idTransaction);			 
 			$info = session('info');			

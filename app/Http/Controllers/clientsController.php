@@ -24,6 +24,51 @@ class clientsController extends Controller
     //
 
 
+    public function dashboardPago(){
+        if(Auth::guard('admin')->check()){
+
+            $currencyExito = DB::table('transaction')            
+            ->where('transaction.status', '=', 'Exito')
+            ->sum('transaction.currency');
+
+            $clientesExito = DB::table('transaction')            
+            ->where('transaction.status', '=', 'Exito')
+            ->count('transaction.status');
+
+            $clientesPendiente = DB::table('transaction')            
+            ->where('transaction.status', '=', 'Pago Pendiente')
+            ->count('transaction.status');
+
+            $clientesSinRevisar = DB::table('transaction')            
+            ->where('transaction.status', '=', 'Sin Revisar')
+            ->count('transaction.status');
+
+            $clientesRevisado = DB::table('transaction')            
+            ->where('transaction.status', '=', 'Revisado')
+            ->count('transaction.status');
+
+            $clientesTodos = DB::table('transaction')                        
+            ->count('transaction.status');
+
+
+
+            $sinRevisar = DB::table('customer')
+                ->select('customer.id as curId' , 'customer.firstName as cuFirst', 'customer.lastName as cuLast', 'customer.sex as cuSex', 'customer.telephone as cuTelephone', 'customer.birthday as cuBirthday',  'customer.address as cuAddress', 
+                'user.id as usId','user.email as usEmail', 
+                'transaction.id as trId', 'transaction.currency as trCurrency', 'transaction.dateTime as trDateTime', 'transaction.status as trStatus')
+                ->join('user', 'user.id_customer', '=', 'customer.id')  
+                ->join('transaction', 'transaction.id_customer', '=', 'customer.id')    
+                ->where('transaction.status', '=', 'Sin Revisar')->get();
+
+            $data = [$currencyExito, $clientesExito, $clientesPendiente, $clientesSinRevisar, $clientesRevisado, $clientesTodos];
+           
+           return view('pages.dashWidget',['data' => $data, 'customer' => $sinRevisar]);  
+         }
+         else{
+            return Redirect::to('/');                
+         }
+
+    }
    
 
     public function dashboard(){

@@ -39,6 +39,25 @@
   $(document).ready(function() {
     $('#dataTable').DataTable();
   } );
+
+</script>
+
+
+
+<script>
+    $(document).ready(function() {
+      setInterval(function() {
+        
+        $.ajax({
+        url: 'dashboardPago',
+        success:function(data)
+        {
+          debugger;
+          $('#divPago').html(data);
+        }
+        });
+      }, 5000);
+    });
 </script>
   
   
