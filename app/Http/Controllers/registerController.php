@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
- 
+
 use App\customer;
 use App\userMe;
 use App\userstatus;
 use App\transaction;
+use App\transactionTable;
 use App\procedure;
 use App\education;
 use App\job;
@@ -18,7 +19,7 @@ use App\parents;
 use App\spouse;
 use Auth;
 
-
+use Mail;
 class registerController extends Controller
 {
     //
@@ -46,25 +47,37 @@ class registerController extends Controller
 
             $idUser = $this->saveUser($idCustomer);            
             if($idUser != ""){
-                $info = array(
-                    "user" => $idUser,
-                    "customer" => $idCustomer,
-                    "name" => request("in_nombre")." ".request("in_apellidos"),
-                    "dir" => request("in_address"),
-                    "price" => "1200"
-                );
-                session()->put('info', $info);
+               
 
                 $idProcedure = $this->saveProcedure($idCustomer);
                 $idEducation = $this->saveEducation($idProcedure);
                 $idJob = $this->saveJob($idProcedure);
                 $idContact = $this->saveContact($idProcedure);
                 $idParent = $this->saveParent($idProcedure);
-                $idSpouse = $this->saveSpouse($idProcedure);
+                $idSpouse = $this->saveSpouse($idProcedure);            
+                $idTransaction = $this->saveOrder("Pago Pendiente", $idCustomer);
+
+                $info = array(
+                    "user" => $idUser,
+                    "customer" => $idCustomer,
+                    "name" => request("in_nombre")." ".request("in_apellidos"),
+                    "dir" => request("in_address"),
+                    "price" => "1200",
+                    "idTransaction" => $idTransaction
+                );
+                session()->put('info', $info);
+
 
                 Auth::logout();
                 
 
+                $subject = "Registro en VisaLaser";
+                $for = "eliotdagon@gmail.com";//request("in_email");
+                Mail::send('pages.email',[], function($msj) use($subject,$for){
+                    $msj->from("desarrollolexsoftwawre@gmail.com","Lexsoftware");
+                    $msj->subject($subject);
+                    $msj->to($for);
+                });
 
                 return Redirect()->route('payment');
             }      
@@ -230,6 +243,25 @@ class registerController extends Controller
         //     return "";
         // }
     }
+
+    protected function saveOrder($message, $idCustomer)
+	{
+		// try{
+					
+			$transaction = new transactionTable;
+			$transaction->currency = "0";
+			$transaction->datetime = date('Y-m-d H:i:s');
+			$transaction->status = $message;		
+			$transaction->id_customer = $idCustomer;					
+			$transaction->save();   			
+			$idTransaction = $transaction->id;
+
+			return $idTransaction;
+		// }		
+		// catch(\Exception $e){
+		// 	return "";
+		// }		
+	}
 
 }
 

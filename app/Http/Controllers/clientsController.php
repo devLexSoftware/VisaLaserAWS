@@ -18,6 +18,8 @@ use App\spouse;
 use Auth;
 use DB;
 
+use Mail;
+
 
 class clientsController extends Controller
 {
@@ -207,7 +209,12 @@ class clientsController extends Controller
             $idUser = request("basic_usId1");
         }
         
-      
+        
+
+
+            // return redirect()->back();
+        
+
         return redirect()->route('clientesEdicion', $idUser)->with('success','Registro actualizado satisfactoriamente');
     }
 

@@ -213,8 +213,8 @@ class PaypalController extends Controller
 	protected function saveOrder($message)
 	{
 		// try{
-			$info = session('info');		
-			$transaction = new transactionTable;
+			$info = session('info');	
+			$transaction = transactionTable::find($info["idTransaction"]);
 			$transaction->currency = "1200";
 			$transaction->datetime = date('Y-m-d H:i:s');
 			$transaction->status = $message;		
