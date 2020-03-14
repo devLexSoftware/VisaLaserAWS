@@ -3,7 +3,7 @@
 @if($errors->any())
 <h4>{{$errors->first()}}</h4>
 @endif
- 
+
 <form id="firtsRegister" action="registerPaymethod" method="post" enctype="multipart/form-data">
 {{ csrf_field() }}
 <div class="panel panel-primary"> 
@@ -102,6 +102,7 @@
 
         <hr>
         
+
         <div class="form-group">
             <h3>Metodo de pago</h3>
         </div>
@@ -118,60 +119,58 @@
                             <label class="custom-control-label" for="debit">Debit card</label>
                         </div> -->
                         <div class="custom-control custom-radio">
-                            <input id="paypal" name="paypal" type="radio" class="custom-control-input" checked>
+                            <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="paypal" type="radio" class="custom-control-input" checked>
                             <label class="custom-control-label" for="paypal">PayPal</label>
+                        
+                            <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="tarjeta" type="radio" class="custom-control-input">
+                            <label class="custom-control-label" for="conekta">Tarjeta</label>
                         </div>
                     </div>
                 </div>
             </div>
             
         </div>
-        <!-- <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-                <label for="cc-name">Nombre en la tarjeta</label>
-                <input type="text" id="name_target" name="name_target" class="form-control" placeholder="" >            
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-                <label for="cc-number">Numero en la tarjeta</label>
-                <input type="text" id="num_target" name="num_target" class="form-control" placeholder="" >            
-            </div>
-          </div>
-        </div>        
-        <div class="row">
-          <div class="col-md-2">
-            <div class="form-group">
-                <label for="cc-expiration">Mes</label>
-                <input type="number" class="form-control" id="month_target" name="month_target" placeholder="" >            
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-group">
-                <label for="cc-cvv">Año</label>
-                <input type="number" class="form-control" id="year_target" name="year_target" placeholder="" >
-            </div>
-          </div>
-          <div class="col-md-2">
-            <div class="form-group">
-                <label for="cc-cvv">CVV</label>
-                <input type="password" class="form-control" id="cvv_target" name="cvv_target" placeholder="" >
-            </div>
-          </div>
-          <div class="col-md-3">
-          </div>
-          <div class="col-md-3">
+        <div class="row" id="divTarjeta" style="display:none">
+            <div class="col-md-3">
+                <span class="card-errors"></span>
                 <div class="form-group">
-                <label for="cc-cvv"></label>
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Total de pedido $1,200.00</span>                    
-                    </h4>                
+                    <label>
+                    <span>Nombre del tarjetahabiente</span>
+                    <input class="form-control" id="nomTarjeta" type="text" maxlength="40" data-conekta="card[name]">
+                    </label>
                 </div>
             </div>
-        </div> -->
-
+            <div class="col-md-3">
+                <div>
+                    <label>
+                    <span>Número de tarjeta de crédito</span>
+                    <input class="form-control" id="numTarjeta" type="number" size="20" data-conekta="card[number]">
+                    </label>
+                </div>
+            </div>
         
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>
+                    <span>CVC</span>
+                    <input class="form-control" id="cvcTarjeta" type="number" size="4" data-conekta="card[cvc]">
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>
+                    <span>Fecha de expiración (MM/AAAA)</span>
+                    <input  type="number" size="2" id="mmTarjeta" data-conekta="card[exp_month]">
+                    </label>
+                    <span>/</span>
+                    <input type="number" size="4" id="yyTarjeta" data-conekta="card[exp_year]">
+                </div>
+            </div>            
+
+                <!-- <button type="submit">Crear token</button> -->
+            </div>
+        </div>    
     </div> 
 </div>       
 <div id="divErrores" style="display: none">
@@ -180,11 +179,48 @@
 </div>              
 
 
-<button type="submit" id="inputSubmit" class="btn btn-primary">Siguiente</button>
+<button type="submit" onclick="loadSpinner()" id="inputSubmit" class="btn btn-primary">Siguiente</button>
 </form>
 
 
 <script>
+
+function loadSpinner(){
+    
+}
+
+function MetodoPago(obj){
+    
+
+    if(obj.value == "paypal"){
+        // document.getElementById("inputSubmit").disabled = true;        
+
+        document.getElementById("nomTarjeta").value = "";
+        document.getElementById("nomTarjeta").required = false;
+        document.getElementById("numTarjeta").value = "";
+        document.getElementById("numTarjeta").required = false;
+        document.getElementById("cvcTarjeta").value = "";
+        document.getElementById("cvcTarjeta").required = false;
+        document.getElementById("mmTarjeta").value = "";
+        document.getElementById("mmTarjeta").required = false;
+        document.getElementById("yyTarjeta").value = "";
+        document.getElementById("yyTarjeta").required = false;
+
+        document.getElementById("divTarjeta").style.display = "none";
+
+    }
+    else{
+        document.getElementById("nomTarjeta").required = true;
+        document.getElementById("numTarjeta").required = true;
+        document.getElementById("cvcTarjeta").required = true;
+        document.getElementById("mmTarjeta").required = true;
+        document.getElementById("yyTarjeta").required = true;
+
+        document.getElementById("divTarjeta").style.display = "block";
+        
+    }
+}
+
 function checkPassword(){
     debugger
 

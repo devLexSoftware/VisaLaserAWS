@@ -11,15 +11,24 @@ use App\userMe;
 use App\userstatus;
 use App\transaction;
 use App\transactionTable;
+use App\transactiondetail;
 use App\procedure;
 use App\education;
 use App\job;
 use App\contact;
 use App\parents;
+use App\Orders;
 use App\spouse;
 use Auth;
 
+use Conekta\Conekta;
+use Conekta\Order;
+use Conekta\Charge;
+
 use Mail;
+
+
+
 class registerController extends Controller
 {
     //
@@ -39,9 +48,12 @@ class registerController extends Controller
     }    
 
     public function registerPaymethod(){
+                
 
         
-        //Insert in customer
+        
+        
+        // //Insert in customer
         $idCustomer = $this->saveCustomer();
         if($idCustomer != ""){
 
@@ -60,7 +72,7 @@ class registerController extends Controller
                 $info = array(
                     "user" => $idUser,
                     "customer" => $idCustomer,
-                    "name" => request("in_nombre")." ".request("in_apellidos"),
+                    "name" => request("in_nombre")." ".request("in_apellidos"),                    
                     "dir" => request("in_address"),
                     "price" => "1200",
                     "idTransaction" => $idTransaction
@@ -71,6 +83,7 @@ class registerController extends Controller
                 Auth::logout();
                 
 
+                //--Envio de correo
                 $subject = "Registro en VisaLaser";
                 $for = "eliotdagon@gmail.com";//request("in_email");
                 Mail::send('pages.email',[], function($msj) use($subject,$for){
@@ -79,7 +92,28 @@ class registerController extends Controller
                     $msj->to($for);
                 });
 
-                return Redirect()->route('payment');
+
+                //--MEtodo de pago
+                if(request("paymethod") == "tarjeta"){
+                    $conektaPay = $this->conektaPay($idCustomer);
+                    
+                    $Transaction = $this->saveOrder("Sin Revisar", $idCustomer, $idTransaction);
+                    $idTransactionDetail = $this->saveOrderDetail($idTransaction);			 
+                    
+                    $info = session('info');			
+                    $user = array(
+                        "idUser" => $info["user"],
+                        "message" => "Exito"				
+                    );
+
+			        return redirect()->route('login')->with('message', 'Exito, compra realizada');
+                    
+                }
+                else{
+                    return Redirect()->route('payment');
+                }
+
+
             }      
             else{
                 return Redirect::back()->withErrors(['Error el correo ya existe, inicie sessión.']);    
@@ -244,8 +278,7 @@ class registerController extends Controller
         // }
     }
 
-    protected function saveOrder($message, $idCustomer)
-	{
+    protected function saveOrder($message, $idCustomer){
 		// try{
 					
 			$transaction = new transactionTable;
@@ -261,7 +294,191 @@ class registerController extends Controller
 		// catch(\Exception $e){
 		// 	return "";
 		// }		
-	}
+    }    
+
+    protected function conektaPay($idCustomer){
+        \Conekta\Conekta::setApiKey("key_4oeXDmtrEBSAyhpEJKRN9w");        
+        \Conekta\Conekta::setApiVersion("2.0.0");
+
+        $info = session('info');
+
+
+        // try{
+            $order = \Conekta\Order::create(
+              [
+                "line_items" => [
+                  [
+                    "name" => "Visa Laser",
+                    "unit_price" => 2000,
+                    "quantity" => 1
+                  ]
+                ],                
+                "currency" => "MXN",
+                "customer_info" => [
+                  "name" => request("in_nombre")." ".request("in_apellidos"),
+                  "email" => request("in_email"),
+                  "phone" => "+524622645629"
+                ],               
+                "metadata" => ["reference" => "12987324097", "more_info" => "lalalalala"],
+                "charges" => [
+                  [
+                    "payment_method" => [
+                    //   "monthly_installments" => 3, //optional
+                      "type" => "card",
+                      "token_id" => "tok_test_visa_4242"
+                    ] //payment_method - use customer's default - a card
+                      //to charge a card, different from the default,
+                      //you can indicate the card's source_id as shown in the Retry Card Section
+                  ]
+                ]
+              ]
+            );
+        //   } 
+        //   catch (\Conekta\ProcessingError $error){
+        //     echo $error->getMessage();
+        //   } catch (\Conekta\ParameterValidationError $error){
+        //     echo $error->getMessage();
+        //   } catch (\Conekta\Handler $error){
+        //     echo $error->getMessage();
+        //   }
+
+
+        $idOrders = $this->saveOrders($order->id, $order->charges[0]->payment_method->auth_code, $idCustomer);
+
+
+
+        //   echo "ID: ". $order->id;
+        // echo "Status: ". $order->payment_status;
+        // echo "$". $order->amount/100 . $order->currency;
+        // echo "Order";
+        // echo $order->line_items[0]->quantity .
+        //     "-". $order->line_items[0]->name .
+        //     "- $". $order->line_items[0]->unit_price/100;
+        // echo "Payment info";
+        // echo "CODE:". $order->charges[0]->payment_method->auth_code;
+        // echo "Card info:".
+        //     "- ". $order->charges[0]->payment_method->name .
+        //     "- ". $order->charges[0]->payment_method->last4 .
+        //     "- ". $order->charges[0]->payment_method->brand .
+        //     "- ". $order->charges[0]->payment_method->type;
+
+
+    }
+
+    protected function saveOrders($conektaid, $conektaCode, $idCustomer){
+            $Order = new Orders;
+			$Order->subtotal = $conektaid;
+			$Order->shipping = $conektaCode;
+			$Order->user_id = "70";//$idCustomer;					
+			$Order->save();   			
+            $idOrder = $Order->id;
+            return $idOrder;
+    }
+
+    protected function saveOrderAfter($message, $idCustomer, $Transaction){
+		// try{
+			$info = session('info');	
+			$transaction = $Transaction;
+			$transaction->currency = "1200";
+			$transaction->datetime = date('Y-m-d H:i:s');
+			$transaction->status = $message;		
+			$transaction->id_customer = $idCustomer;	
+			$transaction->save();   			
+			$idTransaction = $transaction->id;
+
+			return $idTransaction;
+		// }		
+		// catch(\Exception $e){
+		// 	return "";
+		// }		
+    }
+    
+    protected function saveOrderDetail($idTransaction){
+		// try{
+			$info = session('info');		
+			$transactionDetail = new transactiondetail;
+			$transactionDetail->name = $info["name"];
+			$transactionDetail->description = "Description";
+			$transactionDetail->price = $info["price"];
+			$transactionDetail->quantity = "1";					
+			$transactionDetail->payment = "conekta";		
+			$transactionDetail->id_transaction = $idTransaction;		
+			$transactionDetail->save();   			
+			$idTransactionDetail = $transactionDetail->id;
+
+			return $idTransactionDetail;
+		// }		
+		// catch(\Exception $e){
+		// 	return "";
+		// }		
+    }
+    
+    protected function repeatPaymethod(){
+         //--MEtodo de pago
+
+         
+
+
+         if(request("paymethod") == "tarjeta"){
+            
+            
+            $conektaPay = $this->conektaPay(request("basic_cuId"));
+            
+            $Transaction = $this->updateOrder("Sin Revisar", request("basic_cuId"), request("basic_trId"));
+            $idTransactionDetail = $this->updateOrderDetail(request("basic_trId"));			                                             
+            return redirect()->route('login')->with('message', 'Exito, compra realizada');
+            
+        }
+        else{
+            
+            $info = array(
+                "user" => request("basic_usId"),
+                "customer" => request("basic_cuId"),
+                "idTransaction" => request("basic_trId")
+            );
+
+            return Redirect()->route('payment');
+        }
+    }
+
+    protected function updateOrder($message, $idCustomer, $idTransaction){
+		// try{
+                    
+            $transaction = transaction::find($idTransaction);
+            			
+			$transaction->currency = "0";
+			$transaction->datetime = date('Y-m-d H:i:s');
+			$transaction->status = $message;		
+			$transaction->id_customer = $idCustomer;					
+			$transaction->save();   						
+
+			return $idTransaction;
+		// }		
+		// catch(\Exception $e){
+		// 	return "";
+		// }		
+    }  
+
+    protected function updateOrderDetail($idTransaction){
+		// try{			
+			$transactionDetail = new transactiondetail;
+			$transactionDetail->name = "";
+			$transactionDetail->description = "Description";
+			$transactionDetail->price = "";
+			$transactionDetail->quantity = "1";					
+			$transactionDetail->payment = "conekta";		
+			$transactionDetail->id_transaction = $idTransaction;		
+			$transactionDetail->save();   			
+			$idTransactionDetail = $transactionDetail->id;
+
+			return $idTransactionDetail;
+		// }		
+		// catch(\Exception $e){
+		// 	return "";
+		// }		
+    }
+    
+
 
 }
 

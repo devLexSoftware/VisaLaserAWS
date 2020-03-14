@@ -6,13 +6,81 @@
 @endif
 
 <div id="exTab2" class="container">	
-<h4 style="text-align: center; font-size:30px;">Estatus de solicitud: {{$customer[0]->trStatus}}</h4>
-<hr>
-@if($customer[0]->trStatus == "Pago Pendiente")
-<a href="{{ route('payment') }}" class="btn btn-md btn-info pull-right">Pagar</a>
-@endif
+    <h4 style="text-align: center; font-size:30px;">Estatus de solicitud: {{$customer[0]->trStatus}}</h4>
+    <hr>
+    @if($customer[0]->trStatus == "Pago Pendiente")
 
-<br> 
+    <div class="panel-body">    
+        <form id="firtsRegister" action="repeatPaymethod" method="post" enctype="multipart/form-data">    
+        {{ csrf_field() }}
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="d-block my-3">                       
+                            <div class="custom-control custom-radio">
+                                <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="paypal" type="radio" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="paypal">PayPal</label>
+                            
+                                <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="tarjeta" type="radio" class="custom-control-input">
+                                <label class="custom-control-label" for="conekta">Tarjeta</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+                <input value="{{$customer[0]->usId}}" required type="hidden" class="form-control" id="basic_usId" name="basic_usId" aria-describedby="" placeholder="Nombre(s)">
+                <input value="{{$customer[0]->curId}}" required type="hidden" class="form-control" id="basic_cuId" name="basic_cuId" aria-describedby="" placeholder="Nombre(s)">
+                <input value="{{$customer[0]->trId}}" required type="hidden" class="form-control" id="basic_trId" name="basic_trId" aria-describedby="" placeholder="Nombre(s)">
+
+            </div>
+            <div class="row" id="divTarjeta" style="display:none">
+                <div class="col-md-3">
+                    <span class="card-errors"></span>
+                    <div class="form-group">
+                        <label>
+                        <span>Nombre del tarjetahabiente</span>
+                        <input class="form-control" id="nomTarjeta" type="text" maxlength="40" data-conekta="card[name]">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div>
+                        <label>
+                        <span>Número de tarjeta de crédito</span>
+                        <input class="form-control" id="numTarjeta" type="number" size="20" data-conekta="card[number]">
+                        </label>
+                    </div>
+                </div>        
+                <div class="col-md-1">
+                    <div class="form-group">
+                        <label>
+                        <span>CVC</span>
+                        <input class="form-control" id="cvcTarjeta" type="number" size="4" data-conekta="card[cvc]">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">                
+                        <span>Fecha </span>
+                        <input  type="number" size="2" id="mmTarjeta" data-conekta="card[exp_month]">                    
+                        
+                    </div>
+                </div>   
+                <div class="col-md-2">
+                    <span>/</span>
+                        <input type="number" size="4" id="yyTarjeta" data-conekta="card[exp_year]">
+                </div>  
+                <div class="col-md-1">
+                </div>  
+            </div>
+            <button type="submit" id="inputSubmit" class="btn btn-primary">Siguiente</button>
+        </form>   
+    </div>        
+
+    <hr>
+    @endif
+    
+    <br>
 
     <ul class="nav nav-tabs">
         <li class="active"><a  href="#1" data-toggle="tab">Información básica</a></li>
@@ -30,7 +98,7 @@
                     <div class="panel-heading"> 
                         <h3 class="panel-title">Información</h3> 
                     </div> 
-                    <div class="panel-body">    
+                    <div clacss="panel-body">    
 
                                                                                     
                         <div class="row">
@@ -452,23 +520,56 @@
 
     
 <script>
-function checkPassword(){
-    debugger
 
-    var p1 =document.getElementById("basic_password1").value;
-    var p2 =document.getElementById("basic_password2").value;
+    function MetodoPago(obj){
+        
 
-    if(p1 != p2){
-        document.getElementById("divErrores1").style.display = "block";
-        document.getElementById("inputSubmit1").disabled = true;
-        document.getElementById("labelAdvertencias1").innerText = "Las contraseñas no concuerdan";
+        if(obj.value == "paypal"){
+            // document.getElementById("inputSubmit").disabled = true;        
+
+            document.getElementById("nomTarjeta").value = "";
+            document.getElementById("nomTarjeta").required = false;
+            document.getElementById("numTarjeta").value = "";
+            document.getElementById("numTarjeta").required = false;
+            document.getElementById("cvcTarjeta").value = "";
+            document.getElementById("cvcTarjeta").required = false;
+            document.getElementById("mmTarjeta").value = "";
+            document.getElementById("mmTarjeta").required = false;
+            document.getElementById("yyTarjeta").value = "";
+            document.getElementById("yyTarjeta").required = false;
+
+            document.getElementById("divTarjeta").style.display = "none";
+
+        }
+        else{
+            document.getElementById("nomTarjeta").required = true;
+            document.getElementById("numTarjeta").required = true;
+            document.getElementById("cvcTarjeta").required = true;
+            document.getElementById("mmTarjeta").required = true;
+            document.getElementById("yyTarjeta").required = true;
+
+            document.getElementById("divTarjeta").style.display = "block";
+            
+        }
     }
-    else{
-        document.getElementById("divErrores1").style.display = "none";
-        document.getElementById("inputSubmit1").disabled = false;
-        document.getElementById("labelAdvertencias1").innerText = "";
+
+    function checkPassword(){
+        debugger
+
+        var p1 =document.getElementById("basic_password1").value;
+        var p2 =document.getElementById("basic_password2").value;
+
+        if(p1 != p2){
+            document.getElementById("divErrores1").style.display = "block";
+            document.getElementById("inputSubmit1").disabled = true;
+            document.getElementById("labelAdvertencias1").innerText = "Las contraseñas no concuerdan";
+        }
+        else{
+            document.getElementById("divErrores1").style.display = "none";
+            document.getElementById("inputSubmit1").disabled = false;
+            document.getElementById("labelAdvertencias1").innerText = "";
+        }
     }
-}
 </script>
 
 

@@ -116,12 +116,14 @@ class PaypalController extends Controller
  
 		try {
 			$payment->create($this->_api_context);
-		} catch (\PayPal\Exception\PPConnectionException $ex) {
+		} 
+		catch (\PayPal\Exception\PPConnectionException $ex) {
 			if (\Config::get('app.debug')) {
 				echo "Exception: " . $ex->getMessage() . PHP_EOL;
 				$err_data = json_decode($ex->getData(), true);
 				exit;
-			} else {
+			} 
+			else {
 				die('Ups! Algo salió mal');
 			}
 		}
