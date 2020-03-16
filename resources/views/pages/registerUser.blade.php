@@ -16,13 +16,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="sel1">Nombre(s)<span class="star"> *</span></label>
-                    <input required type="text" class="form-control" id="in_nombre" name="in_nombre" aria-describedby="" placeholder="Nombre(s)">
+                    <input value="{{ old('in_nombre') }}" required type="text" class="form-control" id="in_nombre" name="in_nombre" aria-describedby="" placeholder="Nombre(s)">
                 </div>
             </div>                                  
             <div class="col-md-6">
                 <div class="form-group">
                 <label for="sel1">Apellidos(s)<span class="star"> *</span></label>
-                    <input required type="text" class="form-control" id="in_apellidos" name="in_apellidos" aria-describedby="" placeholder="Apellidos(s)">
+                    <input value="{{ old('in_apellidos') }}"  required type="text" class="form-control" id="in_apellidos" name="in_apellidos" aria-describedby="" placeholder="Apellidos(s)">
                 </div>                
             </div>                                  
         </div>
@@ -31,20 +31,20 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="sel1">Correo electronico<span class="star"> *</span></label>
-                    <input required type="email" class="form-control" id="in_email" name="in_email" aria-describedby="emailHelp" placeholder="Email">
+                    <input value="{{ old('in_email') }}" required type="email" class="form-control" id="in_email" name="in_email" aria-describedby="emailHelp" placeholder="Email">
                 </div>
             </div>    
 
             <div class="col-md-3">
                 <div class="form-group">
                 <label for="sel1">Contraseña</label>
-                    <input required onblur="checkPassword()" type="password" class="form-control" id="in_password1" name="in_password1" aria-describedby="emailHelp" placeholder="Password">
+                    <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password1" name="in_password1" aria-describedby="emailHelp" placeholder="Password">
                 </div>
             </div>                                 
             <div class="col-md-3">
                 <div class="form-group">
                 <label for="sel1">Verificar Contraseña</label>
-                    <input required onblur="checkPassword()" type="password" class="form-control" id="in_password2" name="in_password2" aria-describedby="emailHelp" placeholder="Verificar password">
+                    <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password2" name="in_password2" aria-describedby="emailHelp" placeholder="Verificar password">
                 </div>
             </div>                                 
                                           
@@ -54,20 +54,20 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="sel1">Dirección</label>
-                    <input type="text" class="form-control" id="in_address" name="in_address" aria-describedby="emailHelp" placeholder="Dirección">
+                    <input value="{{ old('in_address') }}" type="text" class="form-control" id="in_address" name="in_address" aria-describedby="emailHelp" placeholder="Dirección">
                 </div>
             </div>    
 
             <div class="col-md-3">
                 <div class="form-group">
                 <label for="sel1">Num Ext.</label>
-                    <input type="text" class="form-control" id="in_numExt" name="in_numExt" aria-describedby="emailHelp" placeholder="#">
+                    <input value="{{ old('in_numExt') }}" type="text" class="form-control" id="in_numExt" name="in_numExt" aria-describedby="emailHelp" placeholder="#">
                 </div>
             </div>                                 
             <div class="col-md-3">
             <div class="form-group">
                 <label for="sel1">Num Int.</label>
-                    <input type="text" class="form-control" id="in_numInt" name="in_numInt" aria-describedby="emailHelp" placeholder="#">
+                    <input value="{{ old('in_numInt') }}" type="text" class="form-control" id="in_numInt" name="in_numInt" aria-describedby="emailHelp" placeholder="#">
                 </div>
             </div>                                                                           
         </div>
@@ -76,26 +76,26 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="sel1">Estado</label>
-                    <input type="text" class="form-control" id="in_state" name="in_state" aria-describedby="emailHelp" placeholder="Estado">
+                    <input value="{{ old('in_state') }}" type="text" class="form-control" id="in_state" name="in_state" aria-describedby="emailHelp" placeholder="Estado">
                 </div>
             </div>    
 
             <div class="col-md-3">
                 <div class="form-group">
                 <label for="sel1">Ciudad</label>
-                    <input type="text" class="form-control" id="in_city" name="in_city" aria-describedby="emailHelp" placeholder="Ciudad">
+                    <input value="{{ old('in_city') }}" type="text" class="form-control" id="in_city" name="in_city" aria-describedby="emailHelp" placeholder="Ciudad">
                 </div>
             </div>                                 
             <div class="col-md-3">
             <div class="form-group">
                 <label for="sel1">C.P.</label>
-                    <input type="number" class="form-control" id="in_cp" name="in_cp" aria-describedby="emailHelp" placeholder="00000">
+                    <input value="{{ old('in_cp') }}" type="number" class="form-control" id="in_cp" name="in_cp" aria-describedby="emailHelp" placeholder="00000">
                 </div>
             </div>                                                                           
             <div class="col-md-3">
             <div class="form-group">
                 <label for="sel1">Colonia</label>
-                    <input type="text" class="form-control" id="in_colonia" name="in_colonia" aria-describedby="emailHelp" placeholder="Colonia">
+                    <input value="{{ old('in_colonia') }}" type="text" class="form-control" id="in_colonia" name="in_colonia" aria-describedby="emailHelp" placeholder="Colonia">
                 </div>
             </div>                                                                           
         </div>

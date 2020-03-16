@@ -51,83 +51,132 @@ class registerController extends Controller
                 
 
         
-        
-        
-        // //Insert in customer
-        $idCustomer = $this->saveCustomer();
-        if($idCustomer != ""){
+        try{
 
-            $idUser = $this->saveUser($idCustomer);            
-            if($idUser != ""){
-               
+            
+            
+            // //Insert in customer
+            $idCustomer = $this->saveCustomer();
+            if($idCustomer != "error-14"){
 
-                $idProcedure = $this->saveProcedure($idCustomer);
-                $idEducation = $this->saveEducation($idProcedure);
-                $idJob = $this->saveJob($idProcedure);
-                $idContact = $this->saveContact($idProcedure);
-                $idParent = $this->saveParent($idProcedure);
-                $idSpouse = $this->saveSpouse($idProcedure);            
-                $idTransaction = $this->saveOrder("Pago Pendiente", $idCustomer);
-
-                $info = array(
-                    "user" => $idUser,
-                    "customer" => $idCustomer,
-                    "name" => request("in_nombre")." ".request("in_apellidos"),                    
-                    "dir" => request("in_address"),
-                    "price" => "1200",
-                    "idTransaction" => $idTransaction
-                );
-                session()->put('info', $info);
-
-
-                Auth::logout();
+                $idUser = $this->saveUser($idCustomer);            
+                if($idUser != "error-00"){
                 
 
-                //--Envio de correo
-                $subject = "Registro en VisaLaser";
-                $for = "eliotdagon@gmail.com";//request("in_email");
-                Mail::send('pages.email',[], function($msj) use($subject,$for){
-                    $msj->from("desarrollolexsoftwawre@gmail.com","Lexsoftware");
-                    $msj->subject($subject);
-                    $msj->to($for);
-                });
-
-
-                //--MEtodo de pago
-                if(request("paymethod") == "tarjeta"){
-                    $conektaPay = $this->conektaPay($idCustomer);
+                    $idProcedure = $this->saveProcedure($idCustomer);
+                    if($idProcedure == "error-01")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 01'])->withInput();
                     
-                    $Transaction = $this->saveOrder("Sin Revisar", $idCustomer, $idTransaction);
-                    $idTransactionDetail = $this->saveOrderDetail($idTransaction);			 
-                    
-                    $info = session('info');			
-                    $user = array(
-                        "idUser" => $info["user"],
-                        "message" => "Exito"				
+                    $idEducation = $this->saveEducation($idProcedure);
+                    if($idEducation == "error-02")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 02'])->withInput();
+
+                    $idJob = $this->saveJob($idProcedure);
+                    if($idJob == "error-04")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 04'])->withInput();
+
+                    $idContact = $this->saveContact($idProcedure);
+                    if($idContact == "error-05")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 05'])->withInput();
+
+                    $idParent = $this->saveParent($idProcedure);
+                    if($idParent == "error-06")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 06'])->withInput();
+
+                    $idSpouse = $this->saveSpouse($idProcedure);            
+                    if($idSpouse == "error-03")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+                        
+                    $idTransaction = $this->saveOrder("Pago Pendiente", $idCustomer);
+                    if($idTransaction == "error-07")                    
+                        return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 07'])->withInput();
+
+                    $info = array(
+                        "user" => $idUser,
+                        "customer" => $idCustomer,
+                        "name" => request("in_nombre")." ".request("in_apellidos"),                    
+                        "dir" => request("in_address"),
+                        "price" => "1200",
+                        "idTransaction" => $idTransaction
                     );
+                    session()->put('info', $info);
 
-			        return redirect()->route('login')->with('message', 'Exito, compra realizada');
+
+                    Auth::logout();
+                    
+
+                    //--Envio de correo
+                    try{
+                        $nameinemail = request("in_nombre")." ".request("in_apellidos");
+                        $subject = "Registro en VisaLaser";
+                        $for = request("in_email");
+                        Mail::send('pages.email',[], function($msj) use($subject,$for){
+                            $msj->from("desarrollolexsoftwawre@gmail.com","Lexsoftware");
+                            $msj->subject($subject);
+                            $msj->to($for);
+                        });
+                    }
+                    catch(\Exception $e){
+
+                    }
+
+                    
+
+
+                    //--MEtodo de pago
+                    if(request("paymethod") == "tarjeta"){
+                        $conektaPay = $this->conektaPay($idCustomer);
+                        if($conektaPay == "error-conekta")                    
+                            return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: Conekta'])->withInput();
+
+                        
+                        $Transaction = $this->updateOrder("Sin Revisar", $idCustomer, $idTransaction);
+                        if($Transaction == "error-12")                    
+                            return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 12'])->withInput();
+
+                        $idTransactionDetail = $this->updateDetail($idTransaction);			 
+                        if($idTransactionDetail == "error-13")                    
+                            return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 13'])->withInput();
+
+                        
+                        $info = session('info');			
+                        $user = array(
+                            "idUser" => $info["user"],
+                            "message" => "Exito"				
+                        );
+
+                        return redirect()->route('login')->with('message', 'Exito, compra realizada');
+                        
+                    }
+                    else{
+                        return Redirect()->route('payment');
+                    }
+
+
+                }      
+                else{
+                    return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 00'])->withInput();
                     
                 }
-                else{
-                    return Redirect()->route('payment');
-                }
 
-
-            }      
-            else{
-                return Redirect::back()->withErrors(['Error el correo ya existe, inicie sessión.']);    
             }
-
-        }
-        else{
-            return Redirect::back()->withErrors(['Error el correo ya existe, inicie sessión.']);
-        }                        
+            else{
+                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 14'])->withInput();
+            }    
+        }    
+        
+        catch(\Exception $e){
+            //    return "";
+    
+                //  return Redirect::back();
+                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 01'])->withInput();
+    
+            }
     }
 
     protected function saveCustomer(){
 
-        //  try{
+         try{
             $customer = new customer;
             $customer->firstName = request("in_nombre");
             $customer->lastName = request("in_apellidos");
@@ -139,17 +188,21 @@ class registerController extends Controller
             $idCustomer = $customer->id;
             
             return $idCustomer;
-        // }
-        // catch(\Exception $e){
+        }
+        catch(\Exception $e){
         //    return "";
 
-        //     //  return Redirect::back();
-        // }
+            //  return Redirect::back();
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 01'])->withInput();
+            return "error-14";
+
+
+        }
     }
 
     protected function saveUser($idCustomer){
 
-        // try{
+        try{
             $user = new userMe;
             $user->code = request("in_email");
             $user->email = request("in_email");
@@ -164,15 +217,18 @@ class registerController extends Controller
             return $idUser;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return "";
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 02']);
+            return "error-00";
+
+        }
     }
 
     protected function saveProcedure($idCustomer){
 
-        // try{
+        try{
             $procedure = new procedure;
             $procedure->id_customer = $idCustomer;
             $procedure->id_procedurestatus = 1;             
@@ -182,15 +238,17 @@ class registerController extends Controller
             return $idProcedure;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+            return "error-01";
+            
+        }
     }
 
     protected function saveEducation($idProcedure){
 
-        // try{
+        try{
             $education = new education;
             $education->id_procedure = $idProcedure;
             
@@ -200,15 +258,17 @@ class registerController extends Controller
             return $idEducation;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 04'])->withInput();            
+            return "error-02";
+            
+        }
     }
 
     protected function saveSpouse($idProcedure){
 
-        // try{
+        try{
             $spouse = new spouse;
             $spouse->id_procedure = $idProcedure;
             
@@ -218,15 +278,16 @@ class registerController extends Controller
             return $idSpouce;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 05'])->withInput();
+            return "error-03";
+        }
     }
 
     protected function saveJob($idProcedure){
 
-        // try{
+        try{
             $job = new job;
             $job->id_procedure = $idProcedure;
             
@@ -236,15 +297,16 @@ class registerController extends Controller
             return $idJob;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 06'])->withInput();
+            return "error-04";
+        }
     }
 
     protected function saveContact($idProcedure){
 
-        // try{
+        try{
             $contact = new contact;
             $contact->id_procedure = $idProcedure;
             
@@ -254,15 +316,16 @@ class registerController extends Controller
             return $idContact;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 07'])->withInput();
+            return "error-05";
+        }
     }
 
     protected function saveParent($idProcedure){
 
-        // try{
+        try{
             $parent = new parents;
             $parent->id_procedure = $idProcedure;
             
@@ -272,14 +335,15 @@ class registerController extends Controller
             return $idParent;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        // }
-        // catch(\Exception $e){
-        //     return "";
-        // }
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 08'])->withInput();
+            return "error-06";
+        }
     }
 
     protected function saveOrder($message, $idCustomer){
-		// try{
+		try{
 					
 			$transaction = new transactionTable;
 			$transaction->currency = "0";
@@ -290,20 +354,23 @@ class registerController extends Controller
 			$idTransaction = $transaction->id;
 
 			return $idTransaction;
-		// }		
-		// catch(\Exception $e){
-		// 	return "";
-		// }		
+		}		
+		catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 09'])->withInput();
+			return "error-07";
+		}		
     }    
 
     protected function conektaPay($idCustomer){
+
+        try{
         \Conekta\Conekta::setApiKey("key_4oeXDmtrEBSAyhpEJKRN9w");        
         \Conekta\Conekta::setApiVersion("2.0.0");
 
         $info = session('info');
 
 
-        // try{
+        
             $order = \Conekta\Order::create(
               [
                 "line_items" => [
@@ -333,14 +400,22 @@ class registerController extends Controller
                 ]
               ]
             );
-        //   } 
-        //   catch (\Conekta\ProcessingError $error){
-        //     echo $error->getMessage();
-        //   } catch (\Conekta\ParameterValidationError $error){
-        //     echo $error->getMessage();
-        //   } catch (\Conekta\Handler $error){
-        //     echo $error->getMessage();
-        //   }
+          } 
+          catch (\Conekta\ProcessingError $error){        
+            // return Redirect::back()->withErrors(["Ocurrio un error en el método de pago".$error])->withInput();
+            return "error-conekta";
+            
+            
+          } catch (\Conekta\ParameterValidationError $error){
+            // return Redirect::back()->withErrors(["Ocurrio un error en el método de pago".$error])->withInput();
+            return "error-conekta";
+            
+            
+          } catch (\Conekta\Handler $error){
+            // return Redirect::back()->withErrors(["Ocurrio un error en el método de pago".$error])->withInput();            
+            return "error-conekta";
+          
+          }
 
 
         $idOrders = $this->saveOrders($order->id, $order->charges[0]->payment_method->auth_code, $idCustomer);
@@ -366,6 +441,7 @@ class registerController extends Controller
     }
 
     protected function saveOrders($conektaid, $conektaCode, $idCustomer){
+        try{
             $Order = new Orders;
 			$Order->subtotal = $conektaid;
 			$Order->shipping = $conektaCode;
@@ -373,10 +449,17 @@ class registerController extends Controller
 			$Order->save();   			
             $idOrder = $Order->id;
             return $idOrder;
+            
+        }
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 10'])->withInput();
+            return "error-08";
+        }
+		
     }
 
     protected function saveOrderAfter($message, $idCustomer, $Transaction){
-		// try{
+		try{
 			$info = session('info');	
 			$transaction = $Transaction;
 			$transaction->currency = "1200";
@@ -387,14 +470,15 @@ class registerController extends Controller
 			$idTransaction = $transaction->id;
 
 			return $idTransaction;
-		// }		
-		// catch(\Exception $e){
-		// 	return "";
-		// }		
+		}		
+		catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 11'])->withInput();
+			return "error-09";
+		}		
     }
     
     protected function saveOrderDetail($idTransaction){
-		// try{
+		try{
 			$info = session('info');		
 			$transactionDetail = new transactiondetail;
 			$transactionDetail->name = $info["name"];
@@ -407,42 +491,48 @@ class registerController extends Controller
 			$idTransactionDetail = $transactionDetail->id;
 
 			return $idTransactionDetail;
-		// }		
-		// catch(\Exception $e){
-		// 	return "";
-		// }		
+		}		
+		catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 11'])->withInput();
+            return "error-10";
+		}		
     }
     
     protected function repeatPaymethod(){
          //--MEtodo de pago
+         try{
 
-         
+            
+            if(request("paymethod") == "tarjeta"){
+                
+                
+                $conektaPay = $this->conektaPay(request("basic_cuId"));
+                
+                $Transaction = $this->updateOrder("Sin Revisar", request("basic_cuId"), request("basic_trId"));
+                $idTransactionDetail = $this->updateOrderDetail(request("basic_trId"));			                                             
+                return redirect()->route('login')->with('message', 'Exito, compra realizada');
+                
+            }
+            else{
+                
+                $info = array(
+                    "user" => request("basic_usId"),
+                    "customer" => request("basic_cuId"),
+                    "idTransaction" => request("basic_trId")
+                );
 
-
-         if(request("paymethod") == "tarjeta"){
-            
-            
-            $conektaPay = $this->conektaPay(request("basic_cuId"));
-            
-            $Transaction = $this->updateOrder("Sin Revisar", request("basic_cuId"), request("basic_trId"));
-            $idTransactionDetail = $this->updateOrderDetail(request("basic_trId"));			                                             
-            return redirect()->route('login')->with('message', 'Exito, compra realizada');
-            
+                return Redirect()->route('payment');
+            }
         }
-        else{
-            
-            $info = array(
-                "user" => request("basic_usId"),
-                "customer" => request("basic_cuId"),
-                "idTransaction" => request("basic_trId")
-            );
+        catch(\Exception $e){
+            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 12'])->withInput();
+            return "error-11";
+		}	
 
-            return Redirect()->route('payment');
-        }
     }
 
     protected function updateOrder($message, $idCustomer, $idTransaction){
-		// try{
+		try{
                     
             $transaction = transaction::find($idTransaction);
             			
@@ -453,14 +543,15 @@ class registerController extends Controller
 			$transaction->save();   						
 
 			return $idTransaction;
-		// }		
-		// catch(\Exception $e){
-		// 	return "";
-		// }		
+		}		
+		catch(\Exception $e){
+            return "error-12";
+			
+		}		
     }  
 
     protected function updateOrderDetail($idTransaction){
-		// try{			
+		try{			
 			$transactionDetail = new transactiondetail;
 			$transactionDetail->name = "";
 			$transactionDetail->description = "Description";
@@ -472,10 +563,11 @@ class registerController extends Controller
 			$idTransactionDetail = $transactionDetail->id;
 
 			return $idTransactionDetail;
-		// }		
-		// catch(\Exception $e){
-		// 	return "";
-		// }		
+		}		
+		catch(\Exception $e){
+            return "error-13";
+			
+		}		
     }
     
 
