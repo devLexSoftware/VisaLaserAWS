@@ -45,7 +45,7 @@ incluye lo siguiente:
     </div>
 </div>
 
-
+<!-- 
 <div>
     <div class="row">
         <div class="col-md-6">
@@ -59,10 +59,11 @@ incluye lo siguiente:
             </p>
         </div>
     </div>
-</div>
+</div> -->
 
 <h4  style="text-align: center;" class="form-info-title">Este pago no es reembolsable y no incluye los pagos Consulares. 
 </h4>
+<br>
 <hr>
 
 @stop

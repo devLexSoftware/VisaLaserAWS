@@ -28,6 +28,7 @@
         @include('includes.footer')
     </footer>
 
+
 </div>
 </body>
 </html>

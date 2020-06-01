@@ -57,7 +57,9 @@
   </div>
 
 
-    <script src="js/jquery.min.js"></script>
+    <!-- <script src="js/jquery.min.js"></script> -->
+  <script type="text/javascript" src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+
     <script type="text/javascript" src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
     <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
@@ -73,31 +75,80 @@
     <!-- Metodo de pago -->    
     <script type="text/javascript" src="https://cdn.conekta.io/js/latest/conekta.js"></script>
 
+
+    <script type="text/javascript" >
+
+    $( document ).ready(function() {
+
+      var dtToday = new Date();
+
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
+
+      if(month < 10)
+          month = '0' + month.toString();
+      if(day < 10)
+          day = '0' + day.toString();
+
+      var maxDate = year + '-' + month + '-' + day;    
+      $('#in_birthday').attr('max', maxDate);
+    });
+
+
+    function loadingSpinner()
+    {            
+      $('#loading').modal('show');      
+
+    }
+    </script>
+
     <script type="text/javascript" >
       Conekta.setPublicKey('key_HnQUGWyaPznx9Co39NrtKcg');
 
-
+debugger;
       var conektaSuccessResponseHandler = function(token) {
+        debugger;
         var $form = $("#card-form");
-        //Inserta el token_id en la forma para que se envíe al servidor
-        $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+          
+        // var pay = $("#metodoPagoPreferente").val();
+        // var pay = $form.find("metodoPagoPreferente").val();
+        // if(pay == "tarjeta")
+        // {          
+          //Inserta el token_id en la forma para que se envíe al servidor
+          $form.append($('<input type="hidden" name="conektaTokenId" id="conektaTokenId">').val(token.id));
+        // }
         $form.get(0).submit(); //Hace submit
+
       };
+
       var conektaErrorResponseHandler = function(response) {
         var $form = $("#card-form");
+        $("#erroresTarjeta").show();
         $form.find(".card-errors").text(response.message_to_purchaser);
         $form.find("button").prop("disabled", false);
+        $('#loading').modal('hide');      
+        
       };
-
-
+      
       //jQuery para que genere el token después de dar click en submit
       $(function () {
-        $("#card-form").submit(function(event) {
+        $("#card-form").submit(function(event) {     
+
           var $form = $(this);
-          // Previene hacer submit más de una vez
-          $form.find("button").prop("disabled", true);
-          Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);
-          return false;
+
+          var name = $.trim($('#metodoPagoPreferente').val());
+
+          if(name == "tarjeta")
+          {          
+            // Previene hacer submit más de una vez
+            $form.find("button").prop("disabled", true);        
+            Conekta.Token.create($form, conektaSuccessResponseHandler, conektaErrorResponseHandler);            
+            return false;
+          }          
+            $('#loading').modal('show');      
+
+                    
         });
       });
     </script>

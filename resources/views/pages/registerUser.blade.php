@@ -1,10 +1,22 @@
 @extends('layouts.form')
 @section('content1')
 @if($errors->any())
-<h4>{{$errors->first()}}</h4>
+<!-- <h4>{{$errors->first()}}</h4> -->
+<div class="container">    
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group alert alert-danger" id="erroresTarjeta" >
+                <!-- <span class="card-errors"></span> -->
+                <label class="card-errors" >{{$errors->first()}}</label>                        
+        </div> 
+    </div> 
+
+    </div> 
+</div> 
 @endif
 
-<form id="firtsRegister" action="registerPaymethod" method="post" enctype="multipart/form-data">
+<form id="card-form" action="registerPaymethod" method="post" enctype="multipart/form-data">
 {{ csrf_field() }}
 <div class="panel panel-primary"> 
     <div class="panel-heading"> 
@@ -16,15 +28,45 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="sel1">Nombre(s)<span class="star"> *</span></label>
-                    <input value="{{ old('in_nombre') }}" required type="text" class="form-control" id="in_nombre" name="in_nombre" aria-describedby="" placeholder="Nombre(s)">
+                    <input value="{{ old('in_nombre') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_nombre" name="in_nombre" aria-describedby="" placeholder="Nombre(s)">
                 </div>
             </div>                                  
             <div class="col-md-6">
                 <div class="form-group">
                 <label for="sel1">Apellidos(s)<span class="star"> *</span></label>
-                    <input value="{{ old('in_apellidos') }}"  required type="text" class="form-control" id="in_apellidos" name="in_apellidos" aria-describedby="" placeholder="Apellidos(s)">
+                    <input value="{{ old('in_apellidos') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_apellidos" name="in_apellidos" aria-describedby="" placeholder="Apellidos(s)">
                 </div>                
             </div>                                  
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="sel1">Sexo<span class="star"> *</span></label>
+                    <select class="form-control" id="in_sex" required name="in_sex">
+                        <option disabled selected>Seleccione</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                    </select>  
+                </div>
+            </div>                                  
+            <div class="col-md-3">
+                <div class="form-group">
+                <label for="sel1">Fecha Nacimiento<span class="star"> *</span></label>                    
+                    <input value="{{ old('in_fecha') }}" onblur="calculateYear(this)"  required type="date" class="form-control" id="in_birthday" name="in_birthday"placeholder="Fecha">
+                    <input  type="hidden" id="in_year" name="in_year">
+
+                </div>                
+            </div>                                  
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                <label for="sel1">Teléfono móvil<span class="star"> *</span></label>                    
+                    <input value="{{ old('in_movil') }}" pattern="[1-9]{1}[0-9]{9}" title="Ingresa 10 dígitos" required type="text"  class="form-control" id="in_movil" name="in_movil" placeholder="Móvil">                    
+
+                </div>                
+            </div>           
         </div>
 
         <div class="row">
@@ -37,8 +79,9 @@
 
             <div class="col-md-3">
                 <div class="form-group">
-                <label for="sel1">Contraseña</label>
+                    <label for="sel1">Contraseña</label>
                     <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password1" name="in_password1" aria-describedby="emailHelp" placeholder="Password">
+                    <small class="form-text text-muted" style="color: #3e88bd">No es necesario que utilice su contraseña personal.</small>
                 </div>
             </div>                                 
             <div class="col-md-3">
@@ -119,74 +162,208 @@
                             <label class="custom-control-label" for="debit">Debit card</label>
                         </div> -->
                         <div class="custom-control custom-radio">
-                            <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="paypal" type="radio" class="custom-control-input" checked>
-                            <label class="custom-control-label" for="paypal">PayPal</label>
+                            <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="paypal" type="radio" class="custom-control-input">
+                            <!-- <label class="custom-control-label" style="margin-right: 100px;" for="paypal">PayPal</label>e -->
+                            <img src="{{ asset('images/paypal.png') }}" style="margin-right: 100px;" border="0" alt="PayPal ">
                         
                             <input id="paymethod" name="paymethod" onclick="MetodoPago(this)" value="tarjeta" type="radio" class="custom-control-input">
-                            <label class="custom-control-label" for="conekta">Tarjeta</label>
+                            <!-- <label class="custom-control-label" for="conekta">Tarjeta</label> -->
+                            <img src="{{ asset('images/visamastercard.png') }}" style="margin-right: 100px; width:120px;" border="0" alt="PayPal ">
+
+                            <input type="hidden" id="metodoPagoPreferente" name="metodoPagoPreferente" value="paypal">
+                            <input type="hidden" id="costoTotal" name="costoTotal" value="0">
                         </div>
                     </div>
                 </div>
+            </div>            
+        </div>
+
+        <hr>
+        <div class="row">            
+            <div class="col-md-12">
+                <div class="form-group">
+                <h3 id="costoVisa"></h3>
+                </div>            
             </div>
+        </div>
+        <hr>
+
+        <div id="divTarjeta" style="display:none">    
+
+            <div class="row" >            
+                <div class="col-md-6">                    
+                    <div class="form-group">                    
+                        <label>Nombre completo que aparece en la tarjeta</label>
+                        <input pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" class="form-control" id="nomTarjeta" type="text" maxlength="40" data-conekta="card[name]">
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <label>Número de tarjeta de crédito o debito</label>                        
+                        <input class="form-control" id="numTarjeta" type="number" size="20" data-conekta="card[number]">                        
+                    </div>                    
+                </div>
+            </div>      
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label><span class="hidden-xs">Fecha expiración</span> </label>
+                        <div class="form-inline">
+                            <select class="form-control"  style="width:45%" id="mmTarjeta" data-conekta="card[exp_month]">
+                                <option selected>MM</option>
+                                <option value="01">Enero</option>
+                                <option value="02">Febrero</option>
+                                <option value="03">Marzo</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Mayo</option>
+                                <option value="06">Junio</option>
+                                <option value="07">Julio</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                            <span style="width:10%; text-align: center"> / </span>
+                            <select class="form-control" style="width:45%"  id="yyTarjeta" data-conekta="card[exp_year]">
+                                <option selected>YY</option>
+                                <option value="20">2020</option>
+                                <option value="21">2021</option>
+                                <option value="22">2022</option>
+                                <option value="23">2023</option>
+                                <option value="24">2024</option>
+                                <option value="25">2025</option>
+                                <option value="26">2026</option>
+                                <option value="27">2027</option>
+                                <option value="28">2028</option>
+                                <option value="29">2029</option>
+                                <option value="30">2030</option>
+                                <option value="31">2031</option>
+                                <option value="32">2032</option>
+                                <option value="33">2033</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card">CVV <i class="fa fa-question-circle"></i></label>
+                        <input class="form-control" required id="cvcTarjeta" type="number" size="4" data-conekta="card[cvc]">
+                    </div> <!-- form-group.// -->
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group alert alert-danger" id="erroresTarjeta" style="display:none">
+                        <!-- <span class="card-errors"></span> -->
+                        <label class="card-errors" ></label>                        
+                    </div> 
+                </div> 
+            </div>
+
+            <!-- <div class="row">        
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>CVC</label>
+                        <input class="form-control" id="cvcTarjeta" type="number" size="4" data-conekta="card[cvc]">
+                        
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Fecha de expiración</label>
+                        <input class="form-control  type="number" size="2" id="mmTarjeta" data-conekta="card[exp_month]">                                                                    
+                        <small class="form-text text-muted" style="color: #3e88bd">MM</small>
+
+                    </div>
+                </div>      
+                <div class="col-md-2">
+                    <div class="form-group">                        
+                        <label></label>
+
+                        <input class="form-control type="number" size="4" id="yyTarjeta" data-conekta="card[exp_year]">
+                        <small class="form-text text-muted" style="color: #3e88bd">YY</small>
+                    </div>
+                </div>      
+            </div> -->
             
         </div>
-        <div class="row" id="divTarjeta" style="display:none">
-            <div class="col-md-3">
-                <span class="card-errors"></span>
-                <div class="form-group">
-                    <label>
-                    <span>Nombre del tarjetahabiente</span>
-                    <input class="form-control" id="nomTarjeta" type="text" maxlength="40" data-conekta="card[name]">
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div>
-                    <label>
-                    <span>Número de tarjeta de crédito</span>
-                    <input class="form-control" id="numTarjeta" type="number" size="20" data-conekta="card[number]">
-                    </label>
-                </div>
-            </div>
-        
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>
-                    <span>CVC</span>
-                    <input class="form-control" id="cvcTarjeta" type="number" size="4" data-conekta="card[cvc]">
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label>
-                    <span>Fecha de expiración (MM/AAAA)</span>
-                    <input  type="number" size="2" id="mmTarjeta" data-conekta="card[exp_month]">
-                    </label>
-                    <span>/</span>
-                    <input type="number" size="4" id="yyTarjeta" data-conekta="card[exp_year]">
-                </div>
-            </div>            
+    </div>
+</div>  
 
-                <!-- <button type="submit">Crear token</button> -->
-            </div>
-        </div>    
-    </div> 
-</div>       
+
+
+
 <div id="divErrores" style="display: none">
     <h5 style="color: red;">Errores</h6>
     <label id="labelAdvertencias" style="color:red; font-size: 12px;" for=""></label>
 </div>              
 
 
-<button type="submit" onclick="loadSpinner()" id="inputSubmit" class="btn btn-primary">Siguiente</button>
+<button type="submit"  id="inputSubmit" class="btn btn-primary" disabled>Siguiente</button>
 </form>
+
+
+
+<div class="modal fade" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Procesando Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div class="loader" class="center">Loading...</div>
+            </div>            
+        </div>
+    </div>
+</div>
 
 
 <script>
 
-function loadSpinner(){
-    
+
+function calculateYear(x){        
+    var hoy = new Date();
+    var cumpleanos = new Date(x.value);
+    var edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    var m = hoy.getMonth() - cumpleanos.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+        edad--;
+    }    
+    document.getElementById("in_year").value = edad;       
+    costoVisa();
+}
+
+function costoVisa()
+{    
+
+    debugger;
+    var edad = document.getElementById("in_year").value;       
+
+    // var pay = document.getElementById("paymethod").value;   
+
+    var pay = document.querySelector('input[name="paymethod"]:checked').value;
+
+
+    if(edad <21 && pay == "paypal")        
+        document.getElementById("costoVisa").innerHTML = "SERA CARGADO A SU CUENTA DE PAY PAL EL SIGUIENTE MONTO $35 USD" ;    
+    else if(edad >=21 && pay == "paypal")    
+        document.getElementById("costoVisa").innerHTML = "SERA CARGADO A SU CUENTA DE PAY PAL EL SIGUIENTE MONTO $55 USD" ;
+    else if(edad <21 && pay == "tarjeta")    
+        document.getElementById("costoVisa").innerHTML = "SERA CARGADO A SU TARJETA EL SIGUIENTE MONTO $35 USD" ;    
+    else if(edad >=21 && pay == "tarjeta")    
+        document.getElementById("costoVisa").innerHTML = "SERA CARGADO A SU TARJETA EL SIGUIENTE MONTO $55 USD" ;    
+
+    if(edad < 21)
+    {
+        document.getElementById("costoTotal").value="35"        
+    }
+    else
+    {
+        document.getElementById("costoTotal").value="55"        
+    }
+
 }
 
 function MetodoPago(obj){
@@ -207,6 +384,10 @@ function MetodoPago(obj){
         document.getElementById("yyTarjeta").required = false;
 
         document.getElementById("divTarjeta").style.display = "none";
+        document.getElementById("metodoPagoPreferente").value = "paypal";
+        document.getElementById("inputSubmit").disabled = false;
+
+
 
     }
     else{
@@ -216,28 +397,45 @@ function MetodoPago(obj){
         document.getElementById("mmTarjeta").required = true;
         document.getElementById("yyTarjeta").required = true;
 
-        document.getElementById("divTarjeta").style.display = "block";
+        document.getElementById("divTarjeta").style.display = "block";        
+        document.getElementById("metodoPagoPreferente").value = "tarjeta";
+        document.getElementById("inputSubmit").disabled = false;
+
         
     }
+    costoVisa();
 }
 
 function checkPassword(){
-    debugger
-
+    debugger;
     var p1 =document.getElementById("in_password1").value;
     var p2 =document.getElementById("in_password2").value;
+    
+    var pay = document.querySelector('input[name="paymethod"]:checked');
+
 
     if(p1 != p2){
         document.getElementById("divErrores").style.display = "block";
-        document.getElementById("inputSubmit").disabled = true;
         document.getElementById("labelAdvertencias").innerText = "Las contraseñas no concuerdan";
-    }
+        document.getElementById("inputSubmit").disabled = true;
+
+        if(pay == null)
+            document.getElementById("inputSubmit").disabled = true;
+
+    }    
     else{
         document.getElementById("divErrores").style.display = "none";
-        document.getElementById("inputSubmit").disabled = false;
+        
         document.getElementById("labelAdvertencias").innerText = "";
+        document.getElementById("inputSubmit").disabled = false;
+
+        if(pay == null)
+            document.getElementById("inputSubmit").disabled = true;
     }
 }
+
+
+
 </script>
 
 

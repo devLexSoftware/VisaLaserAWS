@@ -1,6 +1,20 @@
 @extends('layouts.default')
  
 @section('content')
+
+<div class="container">
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Si no recuerda su correo electrónico o su contraseña, envíe un correo a: atencionaclientes@csc-americanvisa-mexico.com</h4>
+        <hr><br>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">

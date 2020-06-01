@@ -89,6 +89,8 @@ Route::post('registerStatus', 'registerController@status');
 
 Route::post('registerPaymethod', 'registerController@registerPaymethod');
 
+Route::post('repeatPaymethod', 'registerController@repeatPaymethod');
+
 Route::get('registerUser', function()
 {
     return View::make('pages.registerUser');

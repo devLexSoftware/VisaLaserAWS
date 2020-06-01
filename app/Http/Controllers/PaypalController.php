@@ -44,12 +44,14 @@ class PaypalController extends Controller
 
 		$info = session('info');
 
+		
+
 		$payer = new Payer();
 		$payer->setPaymentMethod('paypal');
  		
 		$subtotal = 0;
 		$cart = $info;
-        $currency = 'MXN';
+        $currency = 'USD';
         
         // $cart = array(
         //     0 => array(
@@ -67,10 +69,10 @@ class PaypalController extends Controller
 		->setCurrency($currency)
 		->setDescription("Descripcion")
 		->setQuantity(1)
-		->setPrice(1200);
+		->setPrice($info["price"]);
 
 		$items[] = $item;
-		$subtotal = 1200;
+		$subtotal = $info["price"];
 		
  
 		// foreach($cart as $producto){
@@ -90,9 +92,9 @@ class PaypalController extends Controller
  
 		$details = new Details();
 		$details->setSubtotal($subtotal)
-		->setShipping(100);
+		->setShipping(0);
  
-		$total = $subtotal + 100;
+		$total = floatval($info["price"]);
  
 		$amount = new Amount();
 		$amount->setCurrency($currency)
@@ -217,7 +219,7 @@ class PaypalController extends Controller
 		// try{
 			$info = session('info');	
 			$transaction = transactionTable::find($info["idTransaction"]);
-			$transaction->currency = "1200";
+			$transaction->currency = floatval($info["price"]);
 			$transaction->datetime = date('Y-m-d H:i:s');
 			$transaction->status = $message;		
 			$transaction->id_customer = $info["customer"];					
@@ -238,7 +240,7 @@ class PaypalController extends Controller
 			$transactionDetail = new transactiondetail;
 			$transactionDetail->name = $info["name"];
 			$transactionDetail->description = "Description";
-			$transactionDetail->price = $info["price"];
+			$transactionDetail->price = floatval($info["price"]);
 			$transactionDetail->quantity = "1";					
 			$transactionDetail->payment = "paypal";		
 			$transactionDetail->id_transaction = $idTransaction;		

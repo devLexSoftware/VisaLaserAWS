@@ -5,19 +5,21 @@
     Importante
 </p>
 <p class="form-info" style="text-align:justify">
-Visa Laser Mexico, no proporcionará información telefónica a solicitantes
-que no cuenten con un registro en nuestra página. Una vez que usted se haya registrado y
-haya realizado el pago, nuestro personal se pondrá en contacto con usted para continuar
-con el trámite de su VISA, y de esta manera resolver todas sus dudas.
-Problemas con su pago envíe un correo a: pagos@visalaser.com.mx
+CSC American Visa México, no proporcionará información telefónica a solicitantes que
+no cuenten con un registro en nuestra página. Una vez que usted se haya registrado y
+haya realizado el pago, nuestro personal se pondrá en contacto con usted para
+continuar con el trámite de su VISA de turista, y de esta manera resolver todas sus
+dudas. Problemas con su pago envíe un correo a: pagos@csc-americanvisa-
+mexico.com
 </p>
 @stop
  
 @section('content2')
 <div class="col-md-12 order-md-12">
     <h2 class="mb-3"> Registro</h2>
-    <h4 class="mb-3" style="text-align:justify">Por medio del siguiente cuestionario, usted podrá saber si cumple con las condiciones para aplicar
-para este tipo de Visa de turista categoría B1/B2 en los Consulados o Embajada de Los Estados
+    <h4 class="mb-3" style="text-align:justify">Responda con la verdad el siguiente cuestionario, así usted podrá saber
+si cumple con las condiciones para aplicar para este tipo de Visa de
+turista categoría B1/B2 en los Consulados o Embajada de Los Estados
 Unidos en México.</h4>
     <br>
 <br>
@@ -124,7 +126,21 @@ Unidos en México.</h4>
         </div>
     </div> 
 </div>                     
-<button type="submit" class="btn btn-primary">Siguiente</button>
+<button type="submit" onclick="loadingSpinner()" class="btn btn-primary">Siguiente</button>
 </form>
+
+
+<div class="modal fade" id="loading">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>VALIDANDO SUS RESPUESTAS</h4>
+            </div>
+            <div class="modal-body">
+                <div class="loader" class="center">Loading...</div>
+            </div>            
+        </div>
+    </div>
+</div>
 
 @stop

@@ -37,7 +37,8 @@
 
     <footer class="row">
         @include('includes.footer')
-    </footer>
+    </footer>   
+
 
 </body>
 </html>
