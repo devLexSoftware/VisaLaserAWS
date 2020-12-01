@@ -15,5 +15,7 @@ class parents extends Model
         'nameFather',
         'statusMigratoryFather',
         'birthdayFather',
+        'liveUSAFather',
+        'liveUSAMother',
     ];
 }

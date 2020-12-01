@@ -15,6 +15,7 @@ class spouse extends Model
         'living',
         'divorciedDate',
         'marryDate',
+        'adress',
         'description',
         'id_procedure'
     ];

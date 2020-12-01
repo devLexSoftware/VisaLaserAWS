@@ -11,9 +11,19 @@ class customer extends Model
     protected $fillable = [
         'firstName',
         'lastName',
+        'lastNameMother',
         'sex',
         'telephone',
         'birthday',
-        'address'        
+        'address',
+        'street',
+        'subur',
+        'numExt',
+        'numInt',
+        'cp',
+        'city',
+        'state',
+        'workphone',
+        'movil'        
     ];
 }

@@ -13,6 +13,27 @@ class travel extends Model
         'duration',
         'country',
         'state',
-        'id_procedure'
+        'id_procedure',
+            'purpose',
+            'planning', 
+            'numReservation',    
+            'dateReservation',
+            'visitCities',    
+            'adressContact', 
+            'nameContact', 
+            'relationContact',
+            'phoneContact', 
+            'situationContact',
+            'time', 
+            'payName', 
+            'payRelation', 
+            'payPhone', 
+            'payAdress', 
+            'companionName',
+            'companionRelation',
+            'traVisitContactQues',
+            'traPaymeQues',
+            'traFriendQues',
+            'arreglo'
     ];
 }

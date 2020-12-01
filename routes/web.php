@@ -111,6 +111,9 @@ Route::post('savePerfil', 'completeUserController@savePerfil');
 Route::post('saveBasica', 'completeUserController@saveBasica');
 Route::post('saveFamiliar', 'completeUserController@saveFamiliar');
 Route::post('saveEducacion', 'completeUserController@saveEducacion');
+Route::post('saveVisaPasaporte', 'completeUserController@saveVisaPasaporte');
+Route::post('saveTravelHistory', 'completeUserController@saveTravelHistory');
+Route::post('saveInfo', 'completeUserController@saveInfo');
 
 
 // // Route::get('create_paypal_plan', 'PaypalController@create_plan');

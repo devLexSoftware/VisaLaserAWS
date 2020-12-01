@@ -17,8 +17,12 @@ use App\education;
 use App\job;
 use App\contact;
 use App\parents;
+use App\travel;
 use App\Orders;
 use App\spouse;
+use App\background;
+use App\HistoryJob;
+use App\AdditionalInfo;
 use Auth;
 
 use Conekta\Conekta;
@@ -48,9 +52,7 @@ class registerController extends Controller
     }    
 
     public function registerPaymethod(){
-                
-
-        
+            
         // try{
 
                 $check = $this->checkUser();
@@ -87,16 +89,34 @@ class registerController extends Controller
                             $idSpouse = $this->saveSpouse($idProcedure);            
                             if($idSpouse == "error-03")                    
                                 return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
-                                
+                            
+                            
+
+                            ///---nuevas tablas 
+                            $idBackground = $this->saveBackground($idCustomer);            
+                            if($idBackground == "error-15")                    
+                                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 15'])->withInput();
+                            $idAdditional = $this->saveAdditionalInfo($idCustomer);            
+                            if($idAdditional == "error-16")                    
+                                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 16'])->withInput();
+                            $idHistory = $this->saveHistory($idCustomer);            
+                            if($idHistory == "error-17")                    
+                                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 17'])->withInput();    
+                            $idTravel = $this->saveTravel($idProcedure);            
+                            if($idTravel == "error-18")                    
+                                return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 18'])->withInput();    
+
                             $idTransaction = $this->saveOrder("Pago Pendiente", $idCustomer);
                             if($idTransaction == "error-07")                    
                                 return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 07'])->withInput();
+
+                        
 
                             $info = array(
                                 "user" => $idUser,
                                 "customer" => $idCustomer,
                                 "name" => request("in_nombre")." ".request("in_apellidos"),                    
-                                "dir" => request("in_address"),
+                                "dir" => request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city"),
                                 "price" => request("costoTotal"),
                                 "idTransaction" => $idTransaction
                             );
@@ -204,13 +224,6 @@ class registerController extends Controller
 
                 }
                 
-
-
-                    
-
-            
-            
-           
         // }    
         
         // catch(\Exception $e){
@@ -236,28 +249,38 @@ class registerController extends Controller
 
     protected function saveCustomer(){
 
-         try{
+        //  try{
             $customer = new customer;
             $customer->firstName = request("in_nombre");
-            $customer->lastName = request("in_apellidos");
+            $customer->lastName = request("in_apellidoPaterno");
+            $customer->lastNameMother = request("in_apellidoMaterno");
             $customer->sex = request("in_sex");
-            $customer->telephone = request("in_movil");
+            $customer->movil = request("in_movil");
+            $customer->telephone = request("in_phone");
+            $customer->workphone = "";
             $customer->birthday = request("in_birthday");
             $customer->address = request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city");
+            $customer->street = request("in_address");
+            $customer->subur = request("in_colonia");
+            $customer->numExt = request("in_numExt");
+            $customer->numInt = request("in_numInt");
+            $customer->cp = request("in_cp");
+            $customer->city = request("in_city");
+            $customer->state = request("in_state");            
             $customer->save();        
             $idCustomer = $customer->id;
             
             return $idCustomer;
-        }
-        catch(\Exception $e){
+        // }
+        // catch(\Exception $e){
         //    return "";
 
             //  return Redirect::back();
             // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 01'])->withInput();
-            return "error-14";
+        //     return "error-14";
 
 
-        }
+        // }
     }
 
     protected function saveUser($idCustomer){
@@ -288,7 +311,7 @@ class registerController extends Controller
 
     protected function saveProcedure($idCustomer){
 
-        try{
+        // try{
             $procedure = new procedure;
             $procedure->id_customer = $idCustomer;
             $procedure->id_procedurestatus = 1;             
@@ -298,12 +321,88 @@ class registerController extends Controller
             return $idProcedure;
             // Session::set('id_User', $idUser);
             // session()->put('idUser', $idUser);
-        }
-        catch(\Exception $e){
-            // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
-            return "error-01";
+        // }
+        // catch(\Exception $e){
+        //     // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+        //     return "error-01";
             
-        }
+        // }
+    }
+
+    protected function saveBackground($idCustomer){
+
+        // try{
+            $background = new background;
+            $background->id_customer = $idCustomer;            
+            $background->save();        
+            $idBackground = $background->id;
+    
+            return $idBackground;
+            // Session::set('id_User', $idUser);
+            // session()->put('idUser', $idUser);
+        // }
+        // catch(\Exception $e){
+        //     // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+        //     return "error-01";
+            
+        // }
+    }
+
+    protected function saveTravel($idProcedure){
+
+        // try{
+            $travel = new travel;
+            $travel->id_procedure = $idProcedure;            
+            $travel->save();        
+            $idTravel = $travel->id;
+    
+            return $idTravel;
+            // Session::set('id_User', $idUser);
+            // session()->put('idUser', $idUser);
+        // }
+        // catch(\Exception $e){
+        //     // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+        //     return "error-01";
+            
+        // }
+    }
+
+    protected function saveHistory($idCustomer){
+
+        // try{
+            $history = new HistoryJob;
+            $history->id_customer = $idCustomer;            
+            $history->save();        
+            $idHistory = $history->id;
+    
+            return $idHistory;
+            // Session::set('id_User', $idUser);
+            // session()->put('idUser', $idUser);
+        // }
+        // catch(\Exception $e){
+        //     // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+        //     return "error-01";
+            
+        // }
+    }
+
+    protected function saveAdditionalInfo($idCustomer){
+
+        // try{
+            $info = new AdditionalInfo;
+            $info->id_customer = $idCustomer;            
+            $info->save();        
+            $idInfo = $info->id;
+    
+            return $idInfo;
+            // Session::set('id_User', $idUser);
+            // session()->put('idUser', $idUser);
+        // }
+        // catch(\Exception $e){
+        //     // return Redirect::back()->withErrors([ 'Ocurrio un error al guardar, intente de nuevo. Si tiene problemas contactenos. Code error: 03'])->withInput();
+        //     return "error-01";
+            
+        // }
     }
 
     protected function saveEducation($idProcedure){
@@ -363,6 +462,8 @@ class registerController extends Controller
             return "error-04";
         }
     }
+
+    
 
     protected function saveContact($idProcedure){
 
@@ -442,7 +543,7 @@ class registerController extends Controller
                 ],                
                 "currency" => "USD",
                 "customer_info" => [
-                  "name" => request("in_nombre")." ".request("in_apellidos"),
+                  "name" => request("in_nombre")." ".request("in_apellidoPaterno")." ".request("in_apellidoMaterno"),
                   "email" => request("in_email"),
                   "phone" => request("in_movil")
                 ],               
@@ -576,7 +677,7 @@ class registerController extends Controller
                 "customer" => request("basic_cuId"),
                 "idTransaction" => request("basic_trId"),
                 "price" => request("costoTotal"),
-                "name" => request("in_nombre")." ".request("in_apellidos"),                    
+                "name" => request("in_nombre")." ".request("in_apellidoPaterno")." ".request("in_apellidoMaterno"),                    
 
             );  
             
@@ -658,5 +759,6 @@ class registerController extends Controller
 
 
 }
+
 
 

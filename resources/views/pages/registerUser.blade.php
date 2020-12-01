@@ -27,14 +27,20 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="sel1">Nombre(s)<span class="star"> *</span></label>
+                    <label for="sel1">Nombre(s) del solicitante<span class="star"> *</span></label>
                     <input value="{{ old('in_nombre') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_nombre" name="in_nombre" aria-describedby="" placeholder="Nombre(s)">
                 </div>
             </div>                                  
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
-                <label for="sel1">Apellidos(s)<span class="star"> *</span></label>
-                    <input value="{{ old('in_apellidos') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_apellidos" name="in_apellidos" aria-describedby="" placeholder="Apellidos(s)">
+                <label for="sel1">Apellido Paterno del solicitante<span class="star"> *</span></label>
+                    <input value="{{ old('in_apellidoPaterno') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_apellidoPaterno" name="in_apellidoPaterno" aria-describedby="" placeholder="Apellido">
+                </div>                
+            </div>                                
+            <div class="col-md-3">
+                <div class="form-group">
+                <label for="sel1">Apellido Materno del solicitante<span class="star"> *</span></label>
+                    <input value="{{ old('in_apellidoMaterno') }}" pattern="[a-zA-Z ]{2,254}" title="No se aceptan números" required type="text" class="form-control" id="in_apellidoMaterno" name="in_apellidoMaterno" aria-describedby="" placeholder="Apellido">
                 </div>                
             </div>                                  
         </div>
@@ -60,11 +66,16 @@
             </div>                                  
 
 
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                 <label for="sel1">Teléfono móvil<span class="star"> *</span></label>                    
                     <input value="{{ old('in_movil') }}" pattern="[1-9]{1}[0-9]{9}" title="Ingresa 10 dígitos" required type="text"  class="form-control" id="in_movil" name="in_movil" placeholder="Móvil">                    
-
+                </div>                
+            </div>           
+            <div class="col-md-3">
+                <div class="form-group">
+                <label for="sel1">Teléfono Particular<span class="star"> *</span></label>                    
+                    <input value="{{ old('in_phone') }}" pattern="[1-9]{1}[0-9]{9}" title="Ingresa 10 dígitos" required type="text"  class="form-control" id="in_phone" name="in_phone" placeholder="Móvil">                    
                 </div>                
             </div>           
         </div>
@@ -93,10 +104,11 @@
                                           
         </div>
 
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="sel1">Dirección</label>
+                    <label for="sel1">Calle</label>
                     <input value="{{ old('in_address') }}" type="text" class="form-control" id="in_address" name="in_address" aria-describedby="emailHelp" placeholder="Dirección">
                 </div>
             </div>    

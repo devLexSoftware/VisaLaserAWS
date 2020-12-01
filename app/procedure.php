@@ -19,6 +19,18 @@ class procedure extends Model
         'passportExpedition',
         'passportExpiration',
         'id_customer',
-        'id_procedurestatus'
+        'id_procedurestatus',
+        'passportSate',
+        'solicitante',
+        'visaDelivery',
+        'visaNum',
+        'visaNeg',
+        'visaLostDate',
+        'visaLostDes',
+        'deportee',
+        'deporteeDate',
+        'ocupation',
+        'prvVisaLostQues',
+        'prvDeporteeQues'
     ];
 }

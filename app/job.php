@@ -15,6 +15,7 @@ class job extends Model
         'activities',
         'salary',
         'carrer',
+        'dateInit',
         'description',
         'id_procedure'
     ];

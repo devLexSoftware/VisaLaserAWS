@@ -13,6 +13,12 @@ class contact extends Model
         'relationship',
         'telephone',
         'city',
+        'statusMigratory',
+        'name2',
+        'relationship2',
+        'telephone2',
+        'city2',
+        'statusMigratory',
         'id_procedure'        
     ];
 }
