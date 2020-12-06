@@ -10,6 +10,7 @@
  
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.login.submit') }}">
+                    {{ csrf_field() }}
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
  

@@ -74,7 +74,7 @@ class completeUserController extends Controller
             'HistoryJob.history as hijoHistory', 'HistoryJob.companyName as hijoName', 'HistoryJob.companyPhone as hijoPhone', 'HistoryJob.bossName as hijoBoss', 'HistoryJob.dateStart as hijoDate', 'HistoryJob.note as hijoNote', 'HistoryJob.companyAdress as hijoDireccion',
             'AdditionalInfo.visitCountry as infCountries', 'AdditionalInfo.weapons as infWeapons', 'AdditionalInfo.weaponsInfo as infWeaponsInfo', 'AdditionalInfo.languages as infIdiomas', 'AdditionalInfo.arrested as infArrested', 
             'AdditionalInfo.facebook as infFacebook', 'AdditionalInfo.flickr as infFlickr', 'AdditionalInfo.instagram as infInstagram', 'AdditionalInfo.linkedin as infLinkedin', 'AdditionalInfo.myspace as infMySpace', 'AdditionalInfo.tumblr as infTumblr',
-            'AdditionalInfo.twitter as infTwitter', 'AdditionalInfo.vine as infVine', 'AdditionalInfo.youtube as infYoutube', 'AdditionalInfo.pinterest as infPinterest', 'AdditionalInfo.reddit as infReddit', 'AdditionalInfo.id as infId', 
+            'AdditionalInfo.twitter as infTwitter', 'AdditionalInfo.vine as infVine', 'AdditionalInfo.youtube as infYoutube', 'AdditionalInfo.pinterest as infPinterest', 'AdditionalInfo.reddit as infReddit', 'AdditionalInfo.id as infId'
             )
            ->join('user', 'user.id_customer', '=', 'customer.id')  
            ->join('transaction', 'transaction.id_customer', '=', 'customer.id')  
