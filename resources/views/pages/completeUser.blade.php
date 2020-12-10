@@ -17,6 +17,10 @@
 </div> 
 @endif
 
+<div  class="container">	
+<h5 style="text-align: center; font-size:18px;">Toda la información de este formulario no será enviada al departamento de visas hasta que haya sido validada y aprobada por usted.</h5>
+</div>
+
 <div id="exTab2" class="container">	
     <h4 style="text-align: center; font-size:30px;">Estatus de solicitud: {{$customer[0]->trStatus}}</h4>
     <hr>
@@ -149,7 +153,7 @@
 
             </div> 
 
-
+            
             <button  type="submit" id="inputSubmit" class="btn btn-primary">Siguiente</button>
         </form>   
     </div>        
@@ -218,9 +222,9 @@
                                     <label for="sel1">Nueva contraseña</label>
                                     <input onblur="checkPassword()" type="password" class="form-control" id="basic_password1" name="basic_password1" aria-describedby="emailHelp" placeholder="Password">
                                     <small class="form-text text-muted" style="color: #3e88bd">Solo llene los campos si desea cambiar su contraseña</small>
-
                                 </div>
                             </div>           
+                            
                             <div class="col-md-3">
                                 <div class="form-group">
                                 <label for="sel1">Verificar nueva contraseña</label>
@@ -239,6 +243,8 @@
 
                                 </div>
                             </div>    
+
+                            
 
                             @if($customer[0]->cuSex != "")
                             <div class="col-md-3">
@@ -358,6 +364,8 @@
                     <label id="labelAdvertencias1" style="color:red; font-size: 12px;" for=""></label>
                 </div>    
 
+
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
                 <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
             </form>
         </div>
@@ -370,13 +378,47 @@
                         <h3 class="panel-title">Información</h3> 
                     </div> 
                     <div class="panel-body">    
-                        <h4>Cónyuge o Pareja</h4>             
+                        <h4>Cónyuge o Pareja</h4>   
+
+                        <div class="row">
+                            <input value="{{$customer[0]->prId}}"  required type="hidden" class="form-control" id="pr_Id3" name="pr_Id3" aria-describedby="" placeholder="Nombre(s)">
+
+                            @if($customer[0]->prCivil != "")
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label for="sel1">Estado civil<span class="star"> *</span></label>
+                                <select class="form-control" id="pr_Civil" required name="pr_Civil" value="{{$customer[0]->prCivil}}" onchange="openOption('conyugue')">
+                                    <option value="{{$customer[0]->prCivil}}" selected>{{$customer[0]->prCivil}}</option>
+                                    <option value="Soltero(Nunca casado)">Soltero(Nunca casado)</option>
+                                    <option value="Casado">Casado</option>
+                                    <option value="Viudo">Viudo</option>
+                                    <option value="Separado">Separado</option>
+                                </select>                                    
+                                </div>
+                            </div>   
+                            @else
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label for="sel1">Estado civil<span class="star"> *</span></label>
+                                <select class="form-control" id="pr_Civil" required name="pr_Civil" onchange="openOption('conyugue')">
+                                    <option style="display:none;">Default</option>
+                                    <option value="Soltero(Nunca casado)">Soltero(Nunca casado)</option>
+                                    <option value="Casado">Casado</option>
+                                    <option value="Viudo">Viudo</option>
+                                    <option value="Separado">Separado</option>
+                                </select>                                    
+                                </div>
+                            </div>   
+                            @endif
+                        </div>   
+
+                        
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_nombreLabel" name="married_nombreLabel">
                                     <label for="sel1">Nombre(s)<span class="star"> *</span></label>
-                                    <input value="{{$customer[0]->spName}}" required  type="text" class="form-control" id="married_nombre" name="married_nombre" aria-describedby="" placeholder="Nombre(s)">
-                                    <input value="{{$customer[0]->spId}}"  required type="hidden" class="form-control" id="married_spId" name="married_spId" aria-describedby="" placeholder="Nombre(s)">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spName}}"   type="text" class="form-control" id="married_nombre" name="married_nombre" aria-describedby="" placeholder="Nombre(s)">
+                                    <input value="{{$customer[0]->spId}}"   type="hidden" class="form-control" id="married_spId" name="married_spId" aria-describedby="" placeholder="Nombre(s)">
 
                                 </div>
                             </div>                                                              
@@ -384,45 +426,45 @@
 
                         <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_birthdayLabel" name="married_birthdayLabel">
                                     <label for="sel1">Fecha nacimiento</label>
-                                    <input value="{{$customer[0]->spBirthday}}" type="date" class="form-control" id="married_birthday" name="married_birthday" aria-describedby="emailHelp" placeholder="Fecha">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spBirthday}}" type="date" class="form-control" id="married_birthday" name="married_birthday" aria-describedby="emailHelp" placeholder="Fecha">
                                 </div>
                             </div>    
 
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_placeLabel" name="married_placeLabel">
                                     <label for="sel1">Lugar de nacimiento</label>
-                                    <input value="{{$customer[0]->spBirthdayPlace}}" type="text" class="form-control" id="married_place" name="married_place" aria-describedby="emailHelp" placeholder="Ciudad">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spBirthdayPlace}}" type="text" class="form-control" id="married_place" name="married_place" aria-describedby="emailHelp" placeholder="Ciudad">
                                 </div>
                             </div>    
 
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_livingLabel" name="married_livingLabel">
                                     <label for="sel1">Lugar donde vive</label>
-                                    <input value="{{$customer[0]->spLiving}}" type="text" class="form-control" id="married_living" name="married_living" aria-describedby="emailHelp" placeholder="Ciudad">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spLiving}}" type="text" class="form-control" id="married_living" name="married_living" aria-describedby="emailHelp" placeholder="Ciudad">
                                 </div>
                             </div>    
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_dateMarriendLabel" name="married_dateMarriendLabel">
                                     <label for="sel1">Fecha de matrimonio</label>
-                                    <input value="{{$customer[0]->spMarryDate}}" type="date" class="form-control" id="married_dateMarriend" name="married_dateMarriend" aria-describedby="emailHelp" placeholder="Fecha">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spMarryDate}}" type="date" class="form-control" id="married_dateMarriend" name="married_dateMarriend" aria-describedby="emailHelp" placeholder="Fecha">
                                 </div>
                             </div>   
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_adressLabel" name="married_adressLabel">
                                     <label for="sel1">Domicilio del Cónyuge o Pareja.</label>
-                                    <input value="{{$customer[0]->spAdress}}" type="text" class="form-control" id="married_adress" name="married_adress" aria-describedby="emailHelp" placeholder="Dirección">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spAdress}}" type="text" class="form-control" id="married_adress" name="married_adress" aria-describedby="emailHelp" placeholder="Dirección">
                                 </div>
                             </div>   
 
                             <div class="col-md-3">
-                                <div class="form-group">
+                                <div style="display:none; diabled:true;" class="form-group" id="married_dateDivorcedLabel" name="married_dateDivorcedLabel">
                                     <label for="sel1">Fecha de divorcio (Si Aplica)</label>
-                                    <input value="{{$customer[0]->spDivorcied}}" type="date" class="form-control" id="married_dateDivorced" name="married_dateDivorced" aria-describedby="emailHelp" placeholder="Fecha">
+                                    <input style="display:none; diabled:true;" value="{{$customer[0]->spDivorcied}}" type="date" class="form-control" id="married_dateDivorced" name="married_dateDivorced" aria-describedby="emailHelp" placeholder="Fecha">
                                 </div>
                             </div>                               
                         </div>
@@ -431,6 +473,7 @@
                         <br>
                         <h4>Contactos</h4>                                     
                         <label for="sel1">Contacto 1</label>
+                        <p>Si cuenta con contactos en Estados Unidos ingrese la información solicitada</p>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -522,16 +565,17 @@
                             </div>                                  
                             <div class="col-md-2">
                                 <div class="form-group">
-                                <label for="sel1">Estado migratorio</label>
-                                    <input value="{{$customer[0]->paStatusMigratoryMother}}" type="text" class="form-control" id="parent_motherStatus" name="parent_motherStatus" aria-describedby="" placeholder="Estado">
-                                </div>                
-                            </div>    
-                            <div class="col-md-2">
-                                <div class="form-group">
                                 <label for="sel1">¿Vive en E.U.?</label>
                                     <input value="{{$customer[0]->paLiveMother}}" type="text" class="form-control" id="parent_paLiveMother" name="parent_paLiveMother" aria-describedby="" placeholder="">
                                 </div>                
                             </div>                                 
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <label for="sel1">Estado migratorio</label>
+                                    <input value="{{$customer[0]->paStatusMigratoryMother}}" type="text" class="form-control" id="parent_motherStatus" name="parent_motherStatus" aria-describedby="" placeholder="Estado">
+                                </div>                
+                            </div>    
+                            
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">Fecha de nacimiento </label>
@@ -547,19 +591,20 @@
                                     <label for="sel1">Nombre del padre<span class="star"> *</span></label>
                                     <input value="{{$customer[0]->paNameFather}}" required type="text" class="form-control" id="parent_nameFather" name="parent_nameFather" aria-describedby="" placeholder="Nombre(s)">
                                 </div>
-                            </div>                                  
+                            </div>                     
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <label for="sel1">¿Vive en E.U.?</label>
+                                    <input value="{{$customer[0]->paLiveFather}}" type="text" class="form-control" id="parent_paLiveFather" name="parent_paLiveFather" aria-describedby="" placeholder="">
+                                </div>                
+                            </div>                 
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">Estado migratorio</label>
                                     <input value="{{$customer[0]->paStatusMigratoryFather}}" type="text" class="form-control" id="parent_fatherStatus" name="parent_fatherStatus" aria-describedby="" placeholder="Estado">
                                 </div>                
                             </div>       
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                <label for="sel1">¿Vive en E.U.?</label>
-                                    <input value="{{$customer[0]->paLiveFather}}" type="text" class="form-control" id="parent_paLiveFather" name="parent_paLiveFather" aria-describedby="" placeholder="">
-                                </div>                
-                            </div>    
+                            
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">Fecha de nacimiento</label>
@@ -578,6 +623,8 @@
                     <h5 style="color: red;">Errores</h6>
                     <label id="labelAdvertencias2" style="color:red; font-size: 12px;" for=""></label>
                 </div>              
+
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
                 <button   id="inputSubmit2" type="submit" class="btn btn-success">Guardar</button>
             </form>
         </div>
@@ -646,6 +693,8 @@
                                 <div class="form-group">
                                     <label for="sel1">Ingreso mensual sin descuentos</label>
                                     <input value="{{$customer[0]->joSalary}}" type="text" class="form-control" id="job_salary" name="job_salary" aria-describedby="" placeholder="Salario">
+                                    <small class="form-text text-muted" style="color: #3e88bd">En esta cantidad, deberá de incluir los ingresos extras y no declarados</small>
+
                                 </div>
                             </div> 
                                                              
@@ -659,14 +708,14 @@
                                 <div class="form-group">
                                     <label for="sel1">¿Tiene usted más de 5 años laborando en su empleo actual?</label>  
                                     <input value="{{$customer[0]->hijoId}}"  type="hidden" class="form-control" id="hijo_Id" name="hijo_Id" aria-describedby="" placeholder="Nombre(s)">
-                                    @if($customer[0]->hijoHistory == "Si")                                    
-                                        <select class="form-control" id="hijo_History"   onchange="openOption('historyJob')">
+                                    @if($customer[0]->hijoHistory != "")                                    
+                                        <select class="form-control" id="hijo_History" name="hijo_History"   onchange="openOption('historyJob')">
                                             <option value="{{$customer[0]->hijoHistory}}" selected><?php echo $customer[0]->hijoHistory; ?></option>                                    
                                             <option value="Si">Si</option>                                            
                                             <option value="No">No</option>
                                         </select>                                                                             
                                     @else
-                                        <select class="form-control" id="hijo_History" onchange="openOption('historyJob')">
+                                        <select class="form-control" id="hijo_History" name="hijo_History" onchange="openOption('historyJob')">
                                             <option style="display:none;">Default</option>                                            
                                             <option value="Si">Si</option>                                            
                                             <option value="No">No</option>
@@ -740,16 +789,18 @@
                                             <option value="{{$customer[0]->edLevel}}" selected>{{$customer[0]->edLevel}}</option>                                            
                                             <option value="Primaria">Primaria</option>
                                             <option value="Secundaria">Secundaria</option>
-                                            <option value="Media superior">Media superior</option>
-                                            <option value="Superior">Superior</option>
+                                            <option value="Preparatoria">Preparatoria</option>
+                                            <option value="Universidad">Universidad</option>
+                                            <option value="Postgrado">Postgrado</option>
                                         </select>                                                                             
                                     @else
                                         <select class="form-control" id="education_grade" required name="education_grade" value="{{$customer[0]->edLevel}}">
                                             <option style="display:none;">Default</option>
                                             <option value="Primaria">Primaria</option>
                                             <option value="Secundaria">Secundaria</option>
-                                            <option value="Media superior">Media superior</option>
-                                            <option value="Superior">Superior</option>
+                                            <option value="Preparatoria">Preparatoria</option>
+                                            <option value="Universidad">Universidad</option>
+                                            <option value="Postgrado">Postgrado</option>
                                         </select>  
                                         @endif
                                 </div>
@@ -779,7 +830,7 @@
                                                              
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label for="sel1">Dirección donde se encuentra el instituto</label>
+                                <label for="sel1">Si no recuerda la dirección de la institución, ingrese solo la ciudad</label>
                                     <input value="{{$customer[0]->edCity}}" type="text" class="form-control" id="education_city" name="education_city" aria-describedby="" placeholder="Ciudad">
                                 </div>                
                             </div>                                                              
@@ -797,6 +848,7 @@
                     <label id="labelAdvertencias3" style="color:red; font-size: 12px;" for=""></label>
                 </div>              
 
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
                 <button  id="inputSubmit3" type="submit" class="btn btn-success">Guardar</button>
                 </form>
         </div>
@@ -872,8 +924,10 @@
                             </div>                                  
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="sel1">Fecha aprox. en que se le entrego.</label>                                
+                                    <label for="sel1">Fecha en la que se entregó la VISA</label>                                
                                     <input value="{{$customer[0]->prvisaDelivery}}"  type="date" class="form-control" id="pr_VisaDateDelivery" name="pr_VisaDateDelivery" placeholder="Fecha">                                    
+                                    <small class="form-text text-muted" style="color: #3e88bd">Si no recuerda la fecha exacta, introduzca la fecha aproximada</small>
+
                                 </div>                
                             </div>                    
                             <div class="col-md-6">
@@ -905,13 +959,13 @@
                             </div>                                                              
                             <div class="col-md-3">
                                 <div  style="display:none; diabled:true;" class="form-group" id="prv_VisaLostDateLabel" name="prv_VisaLostDateLabel">
-                                    <label for="sel1">Fecha en que sucedió.</label>                                
+                                    <label for="sel1">Fecha aproximada en que sucedió.</label>                                
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->prvVisaLostDate}}"  type="date" class="form-control" id="prv_VisaLostDate" name="prv_VisaLostDate" placeholder="Fecha">                                    
                                 </div>                
                             </div>                    
                             <div class="col-md-6">
                                 <div  style="display:none; diabled:true;" class="form-group" id="prv_VisaLostDescriptionLabel" name="prv_VisaLostDescriptionLabel">
-                                    <label for="sel1">Descripción</label>                                
+                                    <label for="sel1">Descripción breve del Incidente.</label>                                
                                     <textarea  style="display:none; diabled:true;" value="{{$customer[0]->prvVisaLostDesc}}" class="form-control" id="prv_VisaLostDescription" name="prv_VisaLostDescription" placeholder="Descripción">{{$customer[0]->prvVisaLostDesc}}</textarea>
                                 </div>                
                             </div>                                  
@@ -965,6 +1019,7 @@
                     <h5 style="color: red;">Errores</h6>
                     <label id="labelAdvertencias1" style="color:red; font-size: 12px;" for=""></label>
                 </div>    
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
 
                 <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
             </form>
@@ -1157,7 +1212,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="tra_PayPhoneLabel" name="tra_PayPhoneLabel">
-                                    <label for="sel1">Móvil </label>                                
+                                    <label for="sel1">Número Telefónico </label>                                                           
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->traPayPhone}}" type="number" class="form-control" id="tra_PayPhone" name="tra_PayPhone" placeholder="Telefono">
                                 </div>                
                             </div>                                    
@@ -1245,7 +1300,7 @@
                         <div class="row">                                                                                                                                   
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_TimeAprox1Label" name="bac_TimeAprox1Label">
-                                    <label for="sel1">Primera duración </label>                                
+                                    <label for="sel1">Duración del primer viaje</label>                                
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacTimeAprox1}}" type="text" class="form-control" id="bac_TimeAprox1" name="bac_TimeAprox1" placeholder="Duración">
                                     <input value="{{$customer[0]->bacId}}"  type="hidden" class="form-control" id="bac_Id" name="bac_Id" aria-describedby="" placeholder="Nombre(s)">
 
@@ -1253,19 +1308,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_DateAprox1Label" name="bac_DateAprox1Label">
-                                    <label for="sel1">Primera Fecha </label>                                
+                                    <label for="sel1">Fecha del primer viaje</label>                                                                                            
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacDateAprox1}}" type="date" class="form-control" id="bac_DateAprox1" name="bac_DateAprox1" placeholder="Fecha">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_TimeAprox2Label" name="bac_TimeAprox2Label">
-                                    <label for="sel1">Segunda duración </label>                                
+                                    <label for="sel1">Duración del segundo viaje</label>                                
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacTimeAprox2}}" type="text" class="form-control" id="bac_TimeAprox2" name="bac_TimeAprox2" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_DateAprox2Label" name="bac_DateAprox2Label">
-                                    <label for="sel1">Segunda Fecha </label>                                
+                                    <label for="sel1">Fecha del segundo viaje</label>                                                                                                   
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacDateAprox2}}" type="date" class="form-control" id="bac_DateAprox2" name="bac_DateAprox2" placeholder="Fecha">
                                 </div>                
                             </div>
@@ -1276,25 +1331,25 @@
                         <div class="row">                                                                                                                                   
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_TimeAprox3Label" name="bac_TimeAprox3Label">
-                                    <label for="sel1">Tercera duración </label>                                
+                                    <label for="sel1">Duración del tercer viaje</label>                                
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacTimeAprox3}}" type="text" class="form-control" id="bac_TimeAprox3" name="bac_TimeAprox3" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_DateAprox3Label" name="bac_DateAprox3Label">
-                                    <label for="sel1">Tercera Fecha </label>                                
+                                    <label for="sel1">Fecha del tercer viaje</label>                                                                                                     
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacDateAprox3}}" type="date" class="form-control" id="bac_DateAprox3" name="bac_DateAprox3" placeholder="Fecha">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_TimeAprox4Label" name="bac_TimeAprox4Label">
-                                    <label for="sel1">Cuarta duración </label>                                
+                                    <label for="sel1">Duración del cuarto viaje</label>                                
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacTimeAprox4}}" type="text" class="form-control" id="bac_TimeAprox4" name="bac_TimeAprox4" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div style="display:none; diabled:true;" class="form-group" id="bac_DateAprox4Label" name="bac_DateAprox4Label">
-                                    <label for="sel1">Cuarta Fecha </label>                                
+                                    <label for="sel1">Fecha del cuarto viaje</label>                                                                                          
                                     <input style="display:none; diabled:true;" value="{{$customer[0]->bacDateAprox4}}" type="date" class="form-control" id="bac_DateAprox4" name="bac_DateAprox4" placeholder="Fecha">
                                 </div>                
                             </div>
@@ -1312,6 +1367,7 @@
                     <label id="labelAdvertencias1" style="color:red; font-size: 12px;" for=""></label>
                 </div>    
 
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
                 <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
             </form>
         </div>
@@ -1331,7 +1387,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sel1">¿Qué países has visitado en los últimos 5 años?</label>
-                                    <textarea value="{{$customer[0]->infCountries}}"  class="form-control" id="inf_Countries" name="inf_Countries" placeholder="Ciudad(es)"></textarea>
+                                    <textarea value="{{$customer[0]->infCountries}}"  class="form-control" id="inf_Countries" name="inf_Countries" placeholder="Pais(es)"></textarea>
                                     <input value="{{$customer[0]->infId}}"  type="hidden" class="form-control" id="inf_Id" name="inf_Id" aria-describedby="" placeholder="Nombre(s)">
 
                                 </div>
@@ -1466,6 +1522,7 @@
                     <label id="labelAdvertencias1" style="color:red; font-size: 12px;" for=""></label>
                 </div>    
 
+                <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
                 <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
             </form>
         </div>
@@ -1604,6 +1661,83 @@ function costoVisa()
 function openOption(valor)
 {
     switch (valor) {
+        case 'conyugue':
+            var p1 =document.getElementById("pr_Civil").value;
+            if(p1 != "Soltero(Nunca casado)"){
+                document.getElementById("married_nombre").style.display = "block";
+                document.getElementById("married_nombre").disabled = false;     
+                document.getElementById("married_nombre").value = "";                                      
+                document.getElementById("married_nombreLabel").style.display = "block";                 
+
+                document.getElementById("married_birthday").style.display = "block";
+                document.getElementById("married_birthday").disabled = false;    
+                document.getElementById("married_birthday").value = "";                                      
+                document.getElementById("married_birthdayLabel").style.display = "block";  
+
+                document.getElementById("married_place").style.display = "block";
+                document.getElementById("married_place").disabled = false;    
+                document.getElementById("married_place").value = "";                                      
+                document.getElementById("married_placeLabel").style.display = "block";
+
+                document.getElementById("married_living").style.display = "block";
+                document.getElementById("married_living").disabled = false;    
+                document.getElementById("married_living").value = "";                                      
+                document.getElementById("married_livingLabel").style.display = "block";    
+
+                document.getElementById("married_dateMarriend").style.display = "block";
+                document.getElementById("married_dateMarriend").disabled = false;    
+                document.getElementById("married_dateMarriend").value = "";                                      
+                document.getElementById("married_dateMarriendLabel").style.display = "block";                  
+
+                document.getElementById("married_adress").style.display = "block";
+                document.getElementById("married_adress").disabled = false;    
+                document.getElementById("married_adress").value = "";                                      
+                document.getElementById("married_adressLabel").style.display = "block";                  
+
+                document.getElementById("married_dateDivorced").style.display = "block";
+                document.getElementById("married_dateDivorced").disabled = false;    
+                document.getElementById("married_dateDivorced").value = "";                                      
+                document.getElementById("married_dateDivorcedLabel").style.display = "block";                  
+            }
+            else{
+                document.getElementById("married_nombre").style.display = "none";
+                document.getElementById("married_nombre").disabled = true;     
+                document.getElementById("married_nombre").value = "";                                      
+                document.getElementById("married_nombreLabel").style.display = "none";                 
+
+                document.getElementById("married_birthday").style.display = "none";
+                document.getElementById("married_birthday").disabled = true;    
+                document.getElementById("married_birthday").value = "";                                      
+                document.getElementById("married_birthdayLabel").style.display = "none";  
+
+                document.getElementById("married_place").style.display = "none";
+                document.getElementById("married_place").disabled = true;    
+                document.getElementById("married_place").value = "";                                      
+                document.getElementById("married_placeLabel").style.display = "none";
+
+                document.getElementById("married_living").style.display = "none";
+                document.getElementById("married_living").disabled = true;    
+                document.getElementById("married_living").value = "";                                      
+                document.getElementById("married_livingLabel").style.display = "none";    
+
+                document.getElementById("married_dateMarriend").style.display = "none";
+                document.getElementById("married_dateMarriend").disabled = true;    
+                document.getElementById("married_dateMarriend").value = "";                                      
+                document.getElementById("married_dateMarriendLabel").style.display = "none";                  
+
+                document.getElementById("married_adress").style.display = "none";
+                document.getElementById("married_adress").disabled = true;    
+                document.getElementById("married_adress").value = "";                                      
+                document.getElementById("married_adressLabel").style.display = "none";                  
+
+                document.getElementById("married_dateDivorced").style.display = "none";
+                document.getElementById("married_dateDivorced").disabled = true;    
+                document.getElementById("married_dateDivorced").value = "";                                      
+                document.getElementById("married_dateDivorcedLabel").style.display = "none";                  
+
+            }
+            break;
+
         case 'VisaRobadaExtraviada':
             var p1 =document.getElementById("pr_VisaRobada").value;
             if(p1 == "Si"){
@@ -1956,7 +2090,7 @@ function openOption(valor)
 
         case 'historyJob':            
             var p1 =document.getElementById("hijo_History").value;            
-            if(p1 == "Si"){
+            if(p1 == "No"){
                 document.getElementById("hijo_NameLabel").style.display = "block";                 
                 document.getElementById("hijo_Name").style.display = "block";
                 document.getElementById("hijo_Name").disabled = false;    
@@ -2052,6 +2186,39 @@ function openOption(valor)
 
 <script>
     $( document ).ready(function() {
+
+        var p1 =document.getElementById("pr_Civil").value;
+            if(p1 != "Soltero(Nunca casado)"){
+                document.getElementById("married_nombre").style.display = "block";
+                document.getElementById("married_nombre").disabled = false;                     
+                document.getElementById("married_nombreLabel").style.display = "block";                 
+
+                document.getElementById("married_birthday").style.display = "block";
+                document.getElementById("married_birthday").disabled = false;                    
+                document.getElementById("married_birthdayLabel").style.display = "block";  
+
+                document.getElementById("married_place").style.display = "block";
+                document.getElementById("married_place").disabled = false;                                              
+                document.getElementById("married_placeLabel").style.display = "block";
+
+                document.getElementById("married_living").style.display = "block";
+                document.getElementById("married_living").disabled = false;                                                 
+                document.getElementById("married_livingLabel").style.display = "block";    
+
+                document.getElementById("married_dateMarriend").style.display = "block";
+                document.getElementById("married_dateMarriend").disabled = false;                                                      
+                document.getElementById("married_dateMarriendLabel").style.display = "block";                  
+
+                document.getElementById("married_adress").style.display = "block";
+                document.getElementById("married_adress").disabled = false;                                          
+                document.getElementById("married_adressLabel").style.display = "block";                  
+
+                document.getElementById("married_dateDivorced").style.display = "block";
+                document.getElementById("married_dateDivorced").disabled = false;                                                      
+                document.getElementById("married_dateDivorcedLabel").style.display = "block";                  
+            }
+
+
         var p1 =document.getElementById("pr_VisaRobada").value;
             if(p1 == "Si"){
                 document.getElementById("prv_VisaLostDate").style.display = "block";
@@ -2200,7 +2367,7 @@ function openOption(valor)
             }
 
             var p1 =document.getElementById("hijo_History").value;            
-            if(p1 == "Si"){
+            if(p1 == "No"){
                 document.getElementById("hijo_NameLabel").style.display = "block";                 
                 document.getElementById("hijo_Name").style.display = "block";
                 document.getElementById("hijo_Name").disabled = false;                    

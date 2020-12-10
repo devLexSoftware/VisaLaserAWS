@@ -89,21 +89,37 @@
             </div>    
 
             <div class="col-md-3">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="sel1">Contraseña</label>
                     <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password1" name="in_password1" aria-describedby="emailHelp" placeholder="Password">
-                    <small class="form-text text-muted" style="color: #3e88bd">No es necesario que utilice su contraseña personal.</small>
+                    <small class="form-text text-muted" style="color: #3e88bd">No es necesario que utilice su contraseña personal. Puede crear una distinta para este sitio</small>
+                </div> -->
+                <label for="sel1">Contraseña</label>
+                <div class="input-group" id="show_password">                    
+                <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password1" name="in_password1" aria-describedby="emailHelp" placeholder="Password">
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                        </div>
                 </div>
+                <small class="form-text text-muted" style="color: #3e88bd">No es necesario que utilice su contraseña personal. Puede crear una distinta para este sitio</small>
             </div>                                 
             <div class="col-md-3">
-                <div class="form-group">
+                <!-- <div class="form-group">
                 <label for="sel1">Verificar Contraseña</label>
+                    <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password2" name="in_password2" aria-describedby="emailHelp" placeholder="Verificar password">                    
+                </div> -->
+
+                <label for="sel1">Verificar Contraseña</label>
+                <div class="input-group" id="show_password">                    
                     <input  required onblur="checkPassword()" type="password" class="form-control" id="in_password2" name="in_password2" aria-describedby="emailHelp" placeholder="Verificar password">
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                        </div>
                 </div>
             </div>                                 
                                           
         </div>
-
+<!-- 
 
         <div class="row">
             <div class="col-md-6">
@@ -153,7 +169,7 @@
                     <input value="{{ old('in_colonia') }}" type="text" class="form-control" id="in_colonia" name="in_colonia" aria-describedby="emailHelp" placeholder="Colonia">
                 </div>
             </div>                                                                           
-        </div>
+        </div> -->
 
         <hr>
         
@@ -332,6 +348,9 @@
 
 
 <script>
+
+
+    
 
 
 function calculateYear(x){        

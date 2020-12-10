@@ -230,13 +230,15 @@ class clientsController extends Controller
         }
         else{
             $idCustomer = $this->saveCustomer();
-            $idUser = $this->saveUser();        
+            $idUser = $this->saveUser();     
+            
+            $idProcedure = $this->saveProcedure();
+            
 
             $idSpouse = $this->saveSpouse();
             $idParent = $this->saveParent();
             $idContact = $this->saveContact();
 
-            $idProcedure = $this->saveProcedure();
             $idJob = $this->saveJob();
             $idHistoryJob = $this->saveHistoryJob();
             $idEducation = $this->saveEducation();
@@ -416,6 +418,7 @@ class clientsController extends Controller
     protected function saveProcedure(){
         $procedure = procedure::find(request("pro_Id"));
         $procedure->ocupation = request("pro_ocupation");
+        $procedure->civilStatus = request("pr_Civil");        
         $procedure->save();        
         $idProcedure = $procedure->id;
         return $idProcedure;

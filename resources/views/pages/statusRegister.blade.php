@@ -1,8 +1,6 @@
 @extends('layouts.form')
 @section('content1')
-<p class="form-info-title" style="text-align: center; font-size:30px;">
-    Felicidades!!!
-</p>
+
 <h3 style="text-align: center;">
 En base a sus respuestas proporcionadas usted SI califica para aplicar para una Visa
 de turista categoría B1/B2 para los Estados Unidos.
@@ -74,5 +72,6 @@ No es necesario que usted tenga una cuenta en dólares para realizar el pago</h4
 
 <hr>
 <br>
+<h4>En caso de requerir factura, enviar sus datos de facturación al correo  pagos@csc-americanvisa-mexico.com</h4>
 <a href="registerUser"  class="btn btn-success" style="font-size:18px; font-weight: bold;">Registar y pagar</a>
 @stop

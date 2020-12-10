@@ -15,7 +15,13 @@
  
     <div id="main">
         <div class="container">
-        
+        @if(\Session::has('message'))		    
+            <div class="row">
+                <div class="col-md-12" style=" text-align: center;">    
+                    <h5>Para continuar con el proceso, ingrese nuevamente su correo electrónico y contraseña que acaba de crear</h5>                
+                </div>
+            </div>
+	    @endif
             <div class="col-md-4">
             @yield('content')    
             </div>

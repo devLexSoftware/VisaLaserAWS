@@ -116,7 +116,7 @@ class registerController extends Controller
                                 "user" => $idUser,
                                 "customer" => $idCustomer,
                                 "name" => request("in_nombre")." ".request("in_apellidos"),                    
-                                "dir" => request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city"),
+                                "dir" => "",//request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city"),
                                 "price" => request("costoTotal"),
                                 "idTransaction" => $idTransaction
                             );
@@ -259,8 +259,8 @@ class registerController extends Controller
             $customer->telephone = request("in_phone");
             $customer->workphone = "";
             $customer->birthday = request("in_birthday");
-            $customer->address = request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city");
-            $customer->street = request("in_address");
+            $customer->address = "";//request("in_address")." ".request("in_numExt")." ".request("in_numInt")." ".request("in_colonia")." ".request("in_state")." ".request("in_city");
+            $customer->street = "";//request("in_address");
             $customer->subur = request("in_colonia");
             $customer->numExt = request("in_numExt");
             $customer->numInt = request("in_numInt");

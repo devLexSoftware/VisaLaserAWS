@@ -5,13 +5,6 @@
 <div class="container">
 
 
-<div class="row">
-    <div class="col-md-12">
-        <h4>Si no recuerda su correo electrónico o su contraseña, envíe un correo a: atencionaclientes@csc-americanvisa-mexico.com</h4>
-        <hr><br>
-        </div>
-    </div>
-</div>
 
 
 
@@ -80,4 +73,16 @@
         </div>
     </div>
 </div>
+
+
+<div class="row">
+
+
+    <div class="col-md-12" style=" text-align: center;">
+    
+        <h4 style="color: red"><b>Si no recuerda su correo electrónico o su contraseña, envíe un correo a: atencionaclientes@csc-americanvisa-mexico.com</b></h4>
+                
+    </div>
+</div>
 @endsection
+

@@ -107,6 +107,7 @@ class completeUserController extends Controller
 
     public function saveFamiliar()
     {
+        $idProcedure = $this->saveProcedure3();
         $idSpouse = $this->saveSpouse();
         $idParent = $this->saveParent();
         $idContact = $this->saveContact();
@@ -300,14 +301,20 @@ class completeUserController extends Controller
         // }
     }
 
+    protected function saveProcedure3(){
+        $procedure = procedure::find(request("pr_Id3"));
+        $procedure->civilStatus = request("pr_Civil");
+        $procedure->save();        
+        $idProcedure = $procedure->id;
+        return $idProcedure;
+    }
+
     protected function saveProcedure(){
         $procedure = procedure::find(request("pro_Id"));
         $procedure->ocupation = request("pro_ocupation");
         $procedure->save();        
         $idProcedure = $procedure->id;
         return $idProcedure;
-
-
     }
 
     protected function saveEducation(){

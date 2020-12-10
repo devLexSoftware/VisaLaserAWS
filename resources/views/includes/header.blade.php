@@ -42,7 +42,7 @@
                     <a href="tramite">TRÁMITE</a>
                 </li>
                 <li class="">
-                    <a href="registerUser">RENOVACIÓN</a>
+                    <a href="registerUser">REGISTRO</a>
                 </li>
                 <li class="">
                     <a href="contact">CONTACTO</a>

@@ -107,6 +107,26 @@
       Conekta.setPublicKey('key_HnQUGWyaPznx9Co39NrtKcg');
 
 debugger;
+
+
+$("#show_password a").on('click', function(event) {
+            debugger;
+            event.preventDefault();
+            if($('#show_password input').attr("type") == "text")
+            {
+                $('#show_password input').attr('type', 'password');
+                $('#show_password i').addClass( "fa-eye-slash" );
+                $('#show_password i').removeClass( "fa-eye" );
+            }
+            else if($('#show_password input').attr("type") == "password")
+            {
+                $('#show_password input').attr('type', 'text');
+                $('#show_password i').removeClass( "fa-eye-slash" );
+                $('#show_password i').addClass( "fa-eye" );
+            }
+        });
+
+        
       var conektaSuccessResponseHandler = function(token) {
         debugger;
         var $form = $("#card-form");

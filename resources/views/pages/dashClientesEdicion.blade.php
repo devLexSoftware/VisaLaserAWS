@@ -265,7 +265,40 @@
                 <div class="card-body">
                     <div class="panel-body">    
                     
-                        <h4>Cónyuge o Pareja</h4>             
+                        <h4>Cónyuge o Pareja</h4>    
+
+                        <div class="row">
+                            <input value="{{$customer[0]->prId}}"  required type="hidden" class="form-control" id="pr_Id3" name="pr_Id3" aria-describedby="" placeholder="Nombre(s)">
+
+                            @if($customer[0]->prCivil != "")
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label for="sel1">Estado civil<span class="star"> *</span></label>
+                                <select class="form-control" id="pr_Civil" required name="pr_Civil" value="{{$customer[0]->prCivil}}" onchange="openOption('conyugue')">
+                                    <option value="{{$customer[0]->prCivil}}" selected>{{$customer[0]->prCivil}}</option>
+                                    <option value="Soltero(Nunca casado)">Soltero(Nunca casado)</option>
+                                    <option value="Casado">Casado</option>
+                                    <option value="Viudo">Viudo</option>
+                                    <option value="Separado">Separado</option>
+                                </select>                                    
+                                </div>
+                            </div>   
+                            @else
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                <label for="sel1">Estado civil<span class="star"> *</span></label>
+                                <select class="form-control" id="pr_Civil" required name="pr_Civil" onchange="openOption('conyugue')">
+                                    <option style="display:none;">Default</option>
+                                    <option value="Soltero(Nunca casado)">Soltero(Nunca casado)</option>
+                                    <option value="Casado">Casado</option>
+                                    <option value="Viudo">Viudo</option>
+                                    <option value="Separado">Separado</option>
+                                </select>                                    
+                                </div>
+                            </div>   
+                            @endif
+                        </div> 
+                                 
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -409,19 +442,20 @@
                                     <input value="{{$customer[0]->paId}}"  type="hidden" class="form-control" id="parent_paId" name="parent_paId" aria-describedby="" placeholder="Nombre(s)">
 
                                 </div>
-                            </div>                                  
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                <label for="sel1">Estado migratorio</label>
-                                    <input value="{{$customer[0]->paStatusMigratoryMother}}" type="text" class="form-control" id="parent_motherStatus" name="parent_motherStatus" aria-describedby="" placeholder="Estado">
-                                </div>                
                             </div>    
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">¿Vive en E.U.?</label>
                                     <input value="{{$customer[0]->paLiveMother}}" type="text" class="form-control" id="parent_paLiveMother" name="parent_paLiveMother" aria-describedby="" placeholder="">
                                 </div>                
-                            </div>                                 
+                            </div>                                                               
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <label for="sel1">Estado migratorio</label>
+                                    <input value="{{$customer[0]->paStatusMigratoryMother}}" type="text" class="form-control" id="parent_motherStatus" name="parent_motherStatus" aria-describedby="" placeholder="Estado">
+                                </div>                
+                            </div>    
+                            
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">Fecha de nacimiento </label>
@@ -436,6 +470,12 @@
                                     <label for="sel1">Nombre del padre<span class="star"> *</span></label>
                                     <input value="{{$customer[0]->paNameFather}}" required type="text" class="form-control" id="parent_nameFather" name="parent_nameFather" aria-describedby="" placeholder="Nombre(s)">
                                 </div>
+                            </div>    
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                <label for="sel1">¿Vive en E.U.?</label>
+                                    <input value="{{$customer[0]->paLiveFather}}" type="text" class="form-control" id="parent_paLiveFather" name="parent_paLiveFather" aria-describedby="" placeholder="">
+                                </div>                
                             </div>                                  
                             <div class="col-md-2">
                                 <div class="form-group">
@@ -443,12 +483,7 @@
                                     <input value="{{$customer[0]->paStatusMigratoryFather}}" type="text" class="form-control" id="parent_fatherStatus" name="parent_fatherStatus" aria-describedby="" placeholder="Estado">
                                 </div>                
                             </div>       
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                <label for="sel1">¿Vive en E.U.?</label>
-                                    <input value="{{$customer[0]->paLiveFather}}" type="text" class="form-control" id="parent_paLiveFather" name="parent_paLiveFather" aria-describedby="" placeholder="">
-                                </div>                
-                            </div>    
+                            
                             <div class="col-md-2">
                                 <div class="form-group">
                                 <label for="sel1">Fecha de nacimiento</label>
@@ -613,16 +648,18 @@
                                             <option value="{{$customer[0]->edLevel}}" selected>{{$customer[0]->edLevel}}</option>                                            
                                             <option value="Primaria">Primaria</option>
                                             <option value="Secundaria">Secundaria</option>
-                                            <option value="Media superior">Media superior</option>
-                                            <option value="Superior">Superior</option>
+                                            <option value="Preparatoria">Preparatoria</option>
+                                            <option value="Universidad">Universidad</option>
+                                            <option value="Postgrado">Postgrado</option>
                                         </select>                                                                             
                                     @else
                                         <select class="form-control" id="education_grade" required name="education_grade" value="{{$customer[0]->edLevel}}">
                                             <option style="display:none;">Default</option>
                                             <option value="Primaria">Primaria</option>
                                             <option value="Secundaria">Secundaria</option>
-                                            <option value="Media superior">Media superior</option>
-                                            <option value="Superior">Superior</option>
+                                            <option value="Preparatoria">Preparatoria</option>
+                                            <option value="Universidad">Universidad</option>
+                                            <option value="Postgrado">Postgrado</option>
                                         </select>  
                                         @endif
                                 </div>
@@ -632,6 +669,7 @@
                                 <div class="form-group">
                                 <label for="sel1">Fecha de ingreso</label>
                                     <input value="{{$customer[0]->edAdmission}}" type="date" class="form-control" id="education_ingress" name="education_ingress" aria-describedby="" placeholder="Fecha">
+                                    <small class="form-text text-muted" style="color: #3e88bd">En esta cantidad, deberá de incluir los ingresos extras y no declarados</small>
                                 </div>                
                             </div>                                  
                             <div class="col-md-3">
@@ -652,7 +690,8 @@
                                                                 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                <label for="sel1">Dirección donde se encuentra el instituto</label>
+                                <label for="sel1">Si no recuerda la dirección de la institución, ingrese solo la ciudad</label>
+
                                     <input value="{{$customer[0]->edCity}}" type="text" class="form-control" id="education_city" name="education_city" aria-describedby="" placeholder="Ciudad">
                                 </div>                
                             </div>                                                              
@@ -731,8 +770,9 @@
                             </div>                                  
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="sel1">Fecha aprox. en que se le entrego.</label>                                
+                                    <label for="sel1">Fecha en la que se entregó la VISA</label>                                                                    
                                     <input value="{{$customer[0]->prvisaDelivery}}"  type="date" class="form-control" id="pr_VisaDateDelivery" name="pr_VisaDateDelivery" placeholder="Fecha">                                    
+                                    <small class="form-text text-muted" style="color: #3e88bd">Si no recuerda la fecha exacta, introduzca la fecha aproximada</small>
                                 </div>                
                             </div>                    
                             <div class="col-md-6">
@@ -764,13 +804,15 @@
                             </div>                                                              
                             <div class="col-md-3">
                                 <div   class="form-group" id="prv_VisaLostDateLabel" name="prv_VisaLostDateLabel">
-                                    <label for="sel1">Fecha en que sucedió.</label>                                
+                                    <label for="sel1">Fecha aproximada en que sucedió.</label>                                
+                                                                   
                                     <input value="{{$customer[0]->prvVisaLostDate}}"  type="date" class="form-control" id="prv_VisaLostDate" name="prv_VisaLostDate" placeholder="Fecha">                                    
                                 </div>                
                             </div>                    
                             <div class="col-md-6">
                                 <div class="form-group" id="prv_VisaLostDescriptionLabel" name="prv_VisaLostDescriptionLabel">
-                                    <label for="sel1">Descripción</label>                                
+                                <label for="sel1">Descripción breve del Incidente.</label>                                
+                                                                 
                                     <textarea  value="{{$customer[0]->prvVisaLostDesc}}" class="form-control" id="prv_VisaLostDescription" name="prv_VisaLostDescription" placeholder="Descripción">{{$customer[0]->prvVisaLostDesc}}</textarea>
                                 </div>                
                             </div>                                  
@@ -997,7 +1039,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="tra_PayPhoneLabel" name="tra_PayPhoneLabel">
-                                    <label for="sel1">Móvil </label>                                
+                                    <label for="sel1">Número Telefónico </label>                                
                                     <input value="{{$customer[0]->traPayPhone}}" type="number" class="form-control" id="tra_PayPhone" name="tra_PayPhone" placeholder="Telefono">
                                 </div>                
                             </div>                                    
@@ -1083,7 +1125,7 @@
                         <div class="row">                                                                                                                                   
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_TimeAprox1Label" name="bac_TimeAprox1Label">
-                                    <label for="sel1">Primera duración </label>                                
+                                    <label for="sel1">Duración del primer viaje</label>                                                                                                
                                     <input value="{{$customer[0]->bacTimeAprox1}}" type="text" class="form-control" id="bac_TimeAprox1" name="bac_TimeAprox1" placeholder="Duración">
                                     <input value="{{$customer[0]->bacId}}"  type="hidden" class="form-control" id="bac_Id" name="bac_Id" aria-describedby="" placeholder="Nombre(s)">
 
@@ -1091,19 +1133,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_DateAprox1Label" name="bac_DateAprox1Label">
-                                    <label for="sel1">Primera Fecha </label>                                
+                                    <label for="sel1">Fecha del primer viaje</label>                                
                                     <input value="{{$customer[0]->bacDateAprox1}}" type="date" class="form-control" id="bac_DateAprox1" name="bac_DateAprox1" placeholder="Fecha">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_TimeAprox2Label" name="bac_TimeAprox2Label">
-                                    <label for="sel1">Segunda duración </label>                                
+                                    <label for="sel1">Duración del segundo viaje</label>                                
                                     <input value="{{$customer[0]->bacTimeAprox2}}" type="text" class="form-control" id="bac_TimeAprox2" name="bac_TimeAprox2" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_DateAprox2Label" name="bac_DateAprox2Label">
-                                    <label for="sel1">Segunda Fecha </label>                                
+                                    <label for="sel1">Fecha del segundo viaje</label>                                
                                     <input value="{{$customer[0]->bacDateAprox2}}" type="date" class="form-control" id="bac_DateAprox2" name="bac_DateAprox2" placeholder="Fecha">
                                 </div>                
                             </div>
@@ -1114,25 +1156,25 @@
                         <div class="row">                                                                                                                                   
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_TimeAprox3Label" name="bac_TimeAprox3Label">
-                                    <label for="sel1">Tercera duración </label>                                
+                                    <label for="sel1">Duración del tercer viaje</label>                                                                                                
                                     <input value="{{$customer[0]->bacTimeAprox3}}" type="text" class="form-control" id="bac_TimeAprox3" name="bac_TimeAprox3" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_DateAprox3Label" name="bac_DateAprox3Label">
-                                    <label for="sel1">Tercera Fecha </label>                                
+                                    <label for="sel1">Fecha del tercer viaje</label>                                
                                     <input value="{{$customer[0]->bacDateAprox3}}" type="date" class="form-control" id="bac_DateAprox3" name="bac_DateAprox3" placeholder="Fecha">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_TimeAprox4Label" name="bac_TimeAprox4Label">
-                                    <label for="sel1">Cuarta duración </label>                                
+                                    <label for="sel1">Duración del cuarto viaje</label>                                                                                                                                      
                                     <input value="{{$customer[0]->bacTimeAprox4}}" type="text" class="form-control" id="bac_TimeAprox4" name="bac_TimeAprox4" placeholder="Duración">
                                 </div>                
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group" id="bac_DateAprox4Label" name="bac_DateAprox4Label">
-                                    <label for="sel1">Cuarta Fecha </label>                                
+                                    <label for="sel1">Fecha del cuarto viaje</label>                                
                                     <input value="{{$customer[0]->bacDateAprox4}}" type="date" class="form-control" id="bac_DateAprox4" name="bac_DateAprox4" placeholder="Fecha">
                                 </div>                
                             </div>
@@ -1155,7 +1197,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sel1">¿Qué países has visitado en los últimos 5 años?</label>
-                                    <textarea value="{{$customer[0]->infCountries}}"  class="form-control" id="inf_Countries" name="inf_Countries" placeholder="Ciudad(es)"><?php echo $customer[0]->infCountries ?></textarea>
+                                    <textarea value="{{$customer[0]->infCountries}}"  class="form-control" id="inf_Countries" name="inf_Countries" placeholder="País(es)"><?php echo $customer[0]->infCountries ?></textarea>
                                     <input value="{{$customer[0]->infId}}"  type="hidden" class="form-control" id="inf_Id" name="inf_Id" aria-describedby="" placeholder="Nombre(s)">
 
                                 </div>
