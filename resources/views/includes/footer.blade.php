@@ -47,7 +47,7 @@
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="copyright">
-            © 2018 - 2019, Csc American Visa México, Todos los derechos del autor
+            Copyright@CSC-American Visa Todos los Derechos Reservados 2020
           </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">

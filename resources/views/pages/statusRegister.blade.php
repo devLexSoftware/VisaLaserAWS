@@ -73,5 +73,5 @@ No es necesario que usted tenga una cuenta en dólares para realizar el pago</h4
 <hr>
 <br>
 <h4>En caso de requerir factura, enviar sus datos de facturación al correo  pagos@csc-americanvisa-mexico.com</h4>
-<a href="registerUser"  class="btn btn-success" style="font-size:18px; font-weight: bold;">Registar y pagar</a>
+<a href="registerUser"  class="btn btn-success" style="font-size:18px; font-weight: bold;">Registar</a>
 @stop

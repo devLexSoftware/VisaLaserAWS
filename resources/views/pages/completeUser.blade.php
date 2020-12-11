@@ -366,7 +366,7 @@
 
 
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
-                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
+                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar y Continuar</button>        
             </form>
         </div>
     
@@ -471,9 +471,9 @@
 
                         <hr>
                         <br>
-                        <h4>Contactos</h4>                                     
-                        <label for="sel1">Contacto 1</label>
-                        <p>Si cuenta con contactos en Estados Unidos ingrese la información solicitada</p>
+                        <h4>Contactos</h4>                  
+                        <p>Si cuenta con contactos en Estados Unidos ingrese la información solicitada</p>                   
+                        <label for="sel1">Contacto 1</label>                        
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -625,7 +625,7 @@
                 </div>              
 
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
-                <button   id="inputSubmit2" type="submit" class="btn btn-success">Guardar</button>
+                <button   id="inputSubmit2" type="submit" class="btn btn-success">Guardar y Continuar</button>
             </form>
         </div>
 
@@ -849,7 +849,7 @@
                 </div>              
 
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
-                <button  id="inputSubmit3" type="submit" class="btn btn-success">Guardar</button>
+                <button  id="inputSubmit3" type="submit" class="btn btn-success">Guardar y Continuar</button>
                 </form>
         </div>
 
@@ -1001,7 +1001,7 @@
                             </div>                    
                             <div class="col-md-6">
                                 <div style="display:none; diabled:true;" class="form-group" id="prv_DeporteeDescLabel" name="prv_DeporteeDescLabel">
-                                    <label for="sel1">Descripción</label>                                
+                                    <label for="sel1">Descripción breve del Incidente</label>                                
                                     <textarea style="display:none; diabled:true;" value="{{$customer[0]->prvDeporteeDesc}}" class="form-control" id="prv_DeporteeDesc" name="prv_DeporteeDesc" placeholder="Descripción">{{$customer[0]->prvDeporteeDesc}}</textarea>                                    
                                 </div>                
                             </div>                                  
@@ -1021,7 +1021,7 @@
                 </div>    
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
 
-                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
+                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar y Continuar</button>        
             </form>
         </div>
 
@@ -1368,7 +1368,7 @@
                 </div>    
 
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
-                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
+                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar y Continuar</button>        
             </form>
         </div>
 
@@ -1523,7 +1523,7 @@
                 </div>    
 
                 <h5>Este formulario es un borrador si hay datos que usted no sepa con precisión nuestro personal le ayudará a resolver todas sus dudas</h5>
-                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar</button>        
+                <button id="inputSubmit1" type="submit" class="btn btn-success">Guardar y Continuar</button>        
             </form>
         </div>
 
@@ -2186,9 +2186,10 @@ function openOption(valor)
 
 <script>
     $( document ).ready(function() {
-
+        debugger;
         var p1 =document.getElementById("pr_Civil").value;
-            if(p1 != "Soltero(Nunca casado)"){
+        
+            if(p1 != "Soltero(Nunca casado)" && p1 != ""){
                 document.getElementById("married_nombre").style.display = "block";
                 document.getElementById("married_nombre").disabled = false;                     
                 document.getElementById("married_nombreLabel").style.display = "block";                 

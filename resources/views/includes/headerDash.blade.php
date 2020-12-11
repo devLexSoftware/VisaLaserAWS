@@ -3,7 +3,8 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('admin') }}">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+          <!-- <i class="fas fa-laugh-wink"></i> -->
+          <img width="50" height="50" src="/images/logo_1.png" class="img-responsive">
         </div>
         <div class="sidebar-brand-text mx-3">VISA LASER </div>
       </a>
@@ -29,22 +30,22 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link" href="{{url('clientesPendientes')}}">          
-          <span>Clientes pago pendiente</span></a>
+          <span>Clientes Pago Pendiente</span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{{url('clientesNoRevisados')}}" >          
-          <span>Clientes sin reservar</span></a>
+          <span>Clientes Sin Revisar</span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{{url('clientesRevisadas')}}" >          
-          <span>Clientes revisados</span></a>
+          <span>Clientes Revisados </span></a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="{{url('clientes')}}" >          
-          <span>Todos los clientes</span></a>
+          <span>Todos los Clientes</span></a>
       </li>
 
 
